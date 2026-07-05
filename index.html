@@ -1,533 +1,1149 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Genio Visión | Centro de Tareas Dirigidas — Refuerzo Educativo en Venezuela</title>
-<meta name="description" content="Genio Visión es un centro de tareas dirigidas que ofrece acompañamiento académico integral para niños y jóvenes: inicial, primaria, liceo, universitario, inglés, matemáticas y más." />
-<meta name="keywords" content="tareas dirigidas, refuerzo escolar, clases particulares Venezuela, centro educativo, matemáticas, inglés, primaria, liceo" />
-<meta name="author" content="Genio Visión" />
-<meta name="robots" content="index, follow" />
-<link rel="canonical" href="https://jhonmalorne.github.io/GenioVision/" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Centro de Tareas Dirigidas Genio Visión. Refuerzo educativo integral con metodologías innovadoras en Venezuela.">
+    <meta name="theme-color" content="#0d47a1">
+    <title>Genio Visión | Centro de Tareas Dirigidas</title>
+    
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
-<!-- Open Graph -->
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Genio Visión | Centro de Tareas Dirigidas" />
-<meta property="og:description" content="Refuerzo educativo para formar el futuro del país. Acompañamiento académico integral para niños y jóvenes." />
-<meta property="og:image" content="https://github.com/jhonmalorne/GenioVision/blob/main/logo.png?raw=true" />
-<meta property="og:url" content="https://jhonmalorne.github.io/GenioVision/" />
-<meta property="og:locale" content="es_VE" />
+    <style>
+        /* Variables CSS para consistencia */
+        :root {
+            --primary-color: #0d47a1;
+            --secondary-color: #00acc1;
+            --accent-color: #ff9800;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-light: #f5f7fa;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --radius: 12px;
+        }
 
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Genio Visión | Centro de Tareas Dirigidas" />
-<meta name="twitter:description" content="Acompañamiento académico integral para niños y jóvenes en Venezuela." />
-<meta name="twitter:image" content="https://github.com/jhonmalorne/GenioVision/blob/main/logo.png?raw=true" />
+        /* Reset y estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<!-- PWA -->
-<link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#1E5FBF" />
-<link rel="icon" href="https://github.com/jhonmalorne/GenioVision/blob/main/logo.png?raw=true" />
-<link rel="apple-touch-icon" href="https://github.com/jhonmalorne/GenioVision/blob/main/logo.png?raw=true" />
+        html {
+            scroll-behavior: smooth;
+        }
 
-<!-- JSON-LD Schema.org -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
-  "name": "Genio Visión",
-  "description": "Centro de tareas dirigidas con acompañamiento académico integral para niños y jóvenes.",
-  "email": "mariannyt24@gmail.com",
-  "telephone": "+58 424-4517644",
-  "openingHours": "Mo-Fr 08:00-18:00",
-  "areaServed": "Venezuela"
-}
-</script>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+        }
 
-<!-- Fuentes -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+        h1, h2, h3, h4 {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
 
-<!-- CSS de librerías CDN -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-<!-- CSS propio -->
-<link rel="stylesheet" href="variables.css" />
-<link rel="stylesheet" href="styles.css" />
-<link rel="stylesheet" href="animations.css" />
-<link rel="stylesheet" href="responsive.css" />
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Utilidades */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 50px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(13, 71, 161, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: #0a367c;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(13, 71, 161, 0.4);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+        }
+
+        .btn-accent:hover {
+            background-color: #e68a00;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+        }
+
+        /* Navbar */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text-dark);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 120px;
+            padding-bottom: 80px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4ebf5 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .hero-title span {
+            color: var(--secondary-color);
+        }
+
+        .hero-text {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .hero-image {
+            flex: 1;
+            position: relative;
+        }
+
+        .hero-image img {
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-blob {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 100%;
+            height: 100%;
+            background-color: var(--secondary-color);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            z-index: 1;
+            opacity: 0.2;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .service-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 4px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-bottom-color: var(--secondary-color);
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(0, 172, 193, 0.1);
+            color: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-icon {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
+        .service-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            background-color: var(--white);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            justify-content: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
+            text-align: center;
+            border: 1px solid #eee;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .pricing-card:hover {
+            transform: scale(1.02);
+            border-color: var(--secondary-color);
+        }
+
+        .pricing-header {
+            margin-bottom: 30px;
+        }
+
+        .pricing-title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .pricing-subtitle {
+            color: var(--secondary-color);
+            font-weight: 600;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pricing-price {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .pricing-price span {
+            font-size: 1.5rem;
+            margin-top: 10px;
+        }
+
+        .pricing-features {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-features li i {
+            color: var(--accent-color);
+        }
+
+        /* Resources Section */
+        .resources-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .resource-box {
+            background: var(--white);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .resource-box h3 {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 10px;
+        }
+
+        .resource-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .resource-item:hover {
+            background: rgba(0, 172, 193, 0.1);
+            transform: translateX(5px);
+        }
+
+        .resource-icon {
+            color: #e53935;
+            font-size: 1.5rem;
+        }
+
+        .resource-name {
+            flex: 1;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .resource-download {
+            color: var(--primary-color);
+        }
+
+        /* Interactive Map Section */
+        .map-section {
+            background-color: var(--white);
+            padding-bottom: 0;
+        }
+
+        .map-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .map-select {
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 2px solid var(--secondary-color);
+            background-color: var(--white);
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--primary-color);
+            outline: none;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+        }
+
+        .map-container {
+            width: 100%;
+            height: 600px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Información de la región en el mapa (Panel lateral/Popup) */
+        .info-panel {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            min-width: 200px;
+        }
+
+        .info-panel h4 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .info-panel ul {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .info-panel li {
+            margin-bottom: 5px;
+        }
+
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+            aspect-ratio: 4/3;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-about img {
+            height: 60px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .footer-title {
+            color: var(--white);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--secondary-color);
+        }
+
+        .contact-info li {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .contact-info i {
+            color: var(--secondary-color);
+            margin-top: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Botón Flotante WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            color: white;
+        }
+
+        /* Responsividad */
+        @media (max-width: 992px) {
+            .hero-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            .resources-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* Mobile menu logic can be extended */
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .section-padding {
+                padding: 50px 0;
+            }
+            .hero {
+                padding-top: 100px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<a href="#main" class="skip-link">Saltar al contenido principal</a>
+    <!-- Navegación -->
+    <header>
+        <div class="container navbar">
+            <a href="#" class="logo">
+                <img src="https://github.com/jhonmalorne/GenioVision/blob/main/logo%20fondo%20celeste.png?raw=true" alt="Genio Visión Logo">
+                <h1>Genio Visión</h1>
+            </a>
+            <nav class="nav-links">
+                <a href="#inicio">Inicio</a>
+                <a href="#servicios">Servicios</a>
+                <a href="#paquetes">Paquetes</a>
+                <a href="#recursos">Recursos</a>
+                <a href="#mapa">Geografía Interactiva</a>
+                <a href="#galeria">Galería</a>
+                <a href="#contacto">Contacto</a>
+            </nav>
+            <i class="fas fa-bars mobile-menu-btn"></i>
+        </div>
+    </header>
 
-<!-- Cursor personalizado -->
-<div class="cursor-dot" aria-hidden="true"></div>
-<div class="cursor-ring" aria-hidden="true"></div>
+    <!-- Sección Hero -->
+    <section id="inicio" class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Refuerzo Educativo para Formar el <span>Futuro del País</span></h1>
+                <p class="hero-text">En un país que necesita fortalecer su educación, ofrecemos acompañamiento académico integral para niños y jóvenes. Nuestra metodología personalizada desarrolla habilidades, confianza y hábitos de estudio que transforman vidas y construyen una mejor Venezuela, integrando postulados de Piaget, Ausubel, Montessori y Vygotsky.</p>
+                <a href="#contacto" class="btn btn-primary">Inscríbete Hoy</a>
+                <a href="#servicios" class="btn btn-accent" style="margin-left: 10px; background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); box-shadow: none;">Conocer Más</a>
+            </div>
+            <div class="hero-image">
+                <div class="hero-blob"></div>
+                <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen3.jpg?raw=true" alt="Estudiantes Genio Visión aprendiendo">
+            </div>
+        </div>
+    </section>
 
-<!-- Loader -->
-<div id="loader" role="status" aria-label="Cargando Genio Visión">
-  <div class="loader-badge"><img src="https://github.com/jhonmalorne/GenioVision/blob/main/logo.png?raw=true" alt="" /></div>
-  <div class="loader-track"><div class="loader-bar"></div></div>
-  <span class="loader-text">Genio Visión</span>
-</div>
+    <!-- Servicios -->
+    <section id="servicios" class="section-padding">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Nuestros Servicios</h2>
+                <p class="section-subtitle">Acompañamiento educativo integral adaptado a las etapas del desarrollo cognitivo, promoviendo el aprendizaje basado en proyectos (ABP) y la neuroeducación.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>Niveles Educativos</h3>
+                    <p>Cubrimos educación inicial, básica (primaria), diversificada (liceo) e introductorio universitario. Refuerzos en inglés, matemáticas, escritura y oratoria.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-lightbulb"></i></div>
+                    <h3>Metodología Innovadora</h3>
+                    <p>Acompañamiento paso a paso, integración de gamificación, actividades prácticas con tablets y estrategias manuales con materiales de reciclaje.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-clock"></i></div>
+                    <h3>Horarios Flexibles</h3>
+                    <p>Disponibilidad de 8:00 am a 6:00 pm, en sesiones de dos horas. Ofrecemos modalidades presencial, virtual, individual o en grupos pequeños.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Beneficios Integrales</h3>
+                    <p>Mejora del rendimiento, desarrollo de confianza y consolidación de la Zona de Desarrollo Próximo trabajando en equipo con los representantes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- Navbar -->
-<header class="navbar">
-  <nav class="container navbar__inner" aria-label="Navegación principal">
-    <a href="#inicio" class="brand">
-      <img src="https://github.com/jhonmalorne/GenioVision/blob/main/logo.png?raw=true" alt="Logo Genio Visión" />
-      <span>Genio Visión</span>
+    <!-- Paquetes y Precios -->
+    <section id="paquetes" class="section-padding pricing">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Inversión Educativa</h2>
+                <p class="section-subtitle">Planes diseñados con bases psicopedagógicas para garantizar un desarrollo progresivo y adaptado al ritmo de cada estudiante.</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <!-- Paquete Piaget -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Paquete Piaget</h3>
+                        <p class="pricing-subtitle">Desarrollo Cognitivo Progresivo</p>
+                        <div class="pricing-price">8$ <span>/ semanal</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check-circle"></i> 4 días a la semana</li>
+                        <li><i class="fas fa-check-circle"></i> 2 horas por día</li>
+                        <li><i class="fas fa-check-circle"></i> Horario a escoger: 8am-12pm o 2pm-6pm</li>
+                        <li><i class="fas fa-check-circle"></i> Material de apoyo básico</li>
+                    </ul>
+                    <a href="https://wa.me/584244517644?text=Hola,%20deseo%20informaci%C3%B3n%20sobre%20el%20Paquete%20Piaget" class="btn btn-primary" style="width: 100%;">Solicitar Cupo</a>
+                </div>
+
+                <!-- Paquete Ausubel -->
+                <div class="pricing-card" style="border: 2px solid var(--secondary-color); transform: scale(1.05); z-index: 1;">
+                    <div style="position: absolute; top: 15px; right: -35px; background: var(--secondary-color); color: white; padding: 5px 40px; transform: rotate(45deg); font-size: 0.8rem; font-weight: bold;">DESTACADO</div>
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Paquete Ausubel</h3>
+                        <p class="pricing-subtitle">Aprendizaje Significativo</p>
+                        <div class="pricing-price">10$ <span>/ semanal</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check-circle"></i> 5 días a la semana (Lunes a Viernes)</li>
+                        <li><i class="fas fa-check-circle"></i> 2 horas por día</li>
+                        <li><i class="fas fa-check-circle"></i> Horario a escoger: 8am-12pm o 2pm-6pm</li>
+                        <li><i class="fas fa-check-circle"></i> Seguimiento personalizado completo</li>
+                    </ul>
+                    <a href="https://wa.me/584244517644?text=Hola,%20deseo%20informaci%C3%B3n%20sobre%20el%20Paquete%20Ausubel" class="btn btn-accent" style="width: 100%;">Solicitar Cupo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recursos Educativos -->
+    <section id="recursos" class="section-padding" style="background: linear-gradient(to right, #0d47a1, #1565c0); color: white;">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title" style="color: white;">Recursos Educativos Gratuitos</h2>
+                <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Materiales descargables estructurados para complementar el aprendizaje en casa y apoyar la gestión docente.</p>
+            </div>
+            
+            <div class="resources-container">
+                <!-- Estudiantes -->
+                <div class="resource-box">
+                    <h3 style="color: var(--primary-color);"><i class="fas fa-child"></i> Para Estudiantes</h3>
+                    <div class="resource-list">
+                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/cuadernillo-de-trazos-para-ni%C3%B1os.pdf?raw=true" target="_blank" class="resource-item">
+                            <i class="fas fa-file-pdf resource-icon"></i>
+                            <span class="resource-name">Cuadernillo de trazos para niños</span>
+                            <i class="fas fa-download resource-download"></i>
+                        </a>
+                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/lecturas%20infantiles%20con%20pictogramas.pdf?raw=true" target="_blank" class="resource-item">
+                            <i class="fas fa-file-pdf resource-icon"></i>
+                            <span class="resource-name">Lecturas infantiles con pictogramas</span>
+                            <i class="fas fa-download resource-download"></i>
+                        </a>
+                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/Ejercicios%20de%20resta.pdf?raw=true" target="_blank" class="resource-item">
+                            <i class="fas fa-file-pdf resource-icon"></i>
+                            <span class="resource-name">Ejercicios de resta básica</span>
+                            <i class="fas fa-download resource-download"></i>
+                        </a>
+                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/ejercicios-de-restas-con-decimales.pdf?raw=true" target="_blank" class="resource-item">
+                            <i class="fas fa-file-pdf resource-icon"></i>
+                            <span class="resource-name">Ejercicios de restas con decimales</span>
+                            <i class="fas fa-download resource-download"></i>
+                        </a>
+                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/Ejercicios%20de%20matematica%20calculando%20ahorros.pdf?raw=true" target="_blank" class="resource-item">
+                            <i class="fas fa-file-pdf resource-icon"></i>
+                            <span class="resource-name">Matemática: Calculando ahorros</span>
+                            <i class="fas fa-download resource-download"></i>
+                        </a>
+                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/ejercicios-de-conversion-de-unidades-de-masa.pdf?raw=true" target="_blank" class="resource-item">
+                            <i class="fas fa-file-pdf resource-icon"></i>
+                            <span class="resource-name">Conversión de unidades de masa</span>
+                            <i class="fas fa-download resource-download"></i>
+                        </a>
+                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/actividades_de_os_fenomenos_naturales.pdf?raw=true" target="_blank" class="resource-item">
+                            <i class="fas fa-file-pdf resource-icon"></i>
+                            <span class="resource-name">Actividades de Fenómenos Naturales</span>
+                            <i class="fas fa-download resource-download"></i>
+                        </a>
+                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/Dibujos%20para%20unir%20y%20conectar%20puntos.pdf?raw=true" target="_blank" class="resource-item">
+                            <i class="fas fa-file-pdf resource-icon"></i>
+                            <span class="resource-name">Dibujos para conectar puntos</span>
+                            <i class="fas fa-download resource-download"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Docentes y Extras -->
+                <div class="resource-box">
+                    <h3 style="color: var(--primary-color);"><i class="fas fa-chalkboard-teacher"></i> Para Docentes / Planificación</h3>
+                    <div class="resource-list">
+                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/bitacora%20de%20incidencias.pdf?raw=true" target="_blank" class="resource-item">
+                            <i class="fas fa-file-pdf resource-icon" style="color: #00acc1;"></i>
+                            <span class="resource-name">Bitácora de incidencias (Formato)</span>
+                            <i class="fas fa-download resource-download"></i>
+                        </a>
+                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/actividades-de-los-dias-de-la-semana.pdf?raw=true" target="_blank" class="resource-item">
+                            <i class="fas fa-file-pdf resource-icon"></i>
+                            <span class="resource-name">Actividades de los días de la semana</span>
+                            <i class="fas fa-download resource-download"></i>
+                        </a>
+                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/actividades-de-los-dias-de-la-semana1.pdf?raw=true" target="_blank" class="resource-item">
+                            <i class="fas fa-file-pdf resource-icon"></i>
+                            <span class="resource-name">Actividades días de la semana (Vol. 2)</span>
+                            <i class="fas fa-download resource-download"></i>
+                        </a>
+                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/actividades%20naviden%CC%83as%20de%20unir%20puntos.pdf?raw=true" target="_blank" class="resource-item">
+                            <i class="fas fa-file-pdf resource-icon"></i>
+                            <span class="resource-name">Especial: Actividades Navideñas</span>
+                            <i class="fas fa-download resource-download"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mapa Interactivo / Geografía Educativa UNESCO -->
+    <section id="mapa" class="section-padding map-section">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Explorador Geográfico Institucional</h2>
+                <p class="section-subtitle">Herramienta interactiva de Ciencias Sociales basada en los lineamientos UNESCO. Explora el relieve, ríos, y división político-territorial. Fomenta el aprendizaje por descubrimiento (ABP).</p>
+            </div>
+            
+            <div class="map-controls">
+                <select id="mapFilter" class="map-select">
+                    <option value="ADM1">Ver por Estados (Nacional)</option>
+                    <option value="ADM2">Ver por Municipios (Regional)</option>
+                </select>
+                <div class="map-select" style="background: var(--bg-light); border-color: transparent; cursor: default;">
+                    <i class="fas fa-info-circle"></i> Usa el control en el mapa para alternar entre relieve topográfico y calles.
+                </div>
+            </div>
+
+            <div id="venezuelaMap" class="map-container"></div>
+        </div>
+    </section>
+
+    <!-- Galería -->
+    <section id="galeria" class="section-padding">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Nuestros Espacios y Experiencias</h2>
+                <p class="section-subtitle">Un entorno diseñado para estimular la creatividad, el enfoque y la interacción social.</p>
+            </div>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/fachadalocal.jpg?raw=true" alt="Fachada del local Genio Visión" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen4.jpg?raw=true" alt="Niños jugando y aprendiendo" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen7.jpg?raw=true" alt="Niña escribiendo y estudiando" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen5.jpg?raw=true" alt="Manualidad de flores con tapas de reciclaje" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen6.jpg?raw=true" alt="Dinámicas de juego educativo" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/mapa_de_Venezuela.png?raw=true" alt="Recurso cartográfico físico" loading="lazy" style="object-fit: contain; background: #fff;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Contacto -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/logo.png?raw=true" alt="Genio Visión Logo Negro">
+                    <p>Formamos líderes a través del refuerzo educativo. Utilizamos la innovación, el reciclaje, y el acompañamiento humano para sacar el genio que cada estudiante lleva dentro.</p>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3 class="footer-title">Contacto</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Ubicación:</strong><br>
+                                Centro de Tareas Dirigidas, Los Guayos, Edo. Carabobo.
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fab fa-whatsapp"></i>
+                            <div>
+                                <strong>Teléfono / WhatsApp:</strong><br>
+                                <a href="https://wa.me/584244517644">+58 424-4517644</a>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <strong>Correo Electrónico:</strong><br>
+                                <a href="mailto:mariannyt24@gmail.com">mariannyt24@gmail.com</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-hours">
+                    <h3 class="footer-title">Horario de Atención</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                Lunes a Viernes<br>
+                                8:00 am - 6:00 pm
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-calendar-alt"></i>
+                            <div>
+                                Sesiones de 2 horas diarias según el paquete seleccionado (Piaget / Ausubel).
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Genio Visión. Todos los derechos reservados. Desarrollado con estándares de accesibilidad WCAG 2.2 y HTML5.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón flotante WhatsApp -->
+    <a href="https://wa.me/584244517644" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
     </a>
-    <ul class="nav-links" id="nav-links">
-      <li><a href="#inicio">Inicio</a></li>
-      <li><a href="#servicios">Servicios</a></li>
-      <li><a href="#metodologia">Metodología</a></li>
-      <li><a href="#planes">Planes</a></li>
-      <li><a href="#recursos">Recursos</a></li>
-      <li><a href="#mapa">Mapa VE</a></li>
-      <li><a href="#quiz">Quiz</a></li>
-      <li><a href="#contacto">Contacto</a></li>
-    </ul>
-    <div class="nav-actions">
-      <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Cambiar modo claro/oscuro">
-        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
-      </button>
-      <a href="#planes" class="btn btn--primary btn--sm">Inscribirme</a>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-expanded="false"><span></span></button>
-    </div>
-  </nav>
-</header>
 
-<main id="main">
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configuración inicial del mapa de Leaflet
+            // Centrado en Venezuela (aprox)
+            const map = L.map('venezuelaMap').setView([7.5229, -66.1916], 6);
 
-  <!-- HERO -->
-  <section class="hero" id="inicio">
-    <div id="particles-hero"></div>
-    <div class="container hero__inner">
-      <div>
-        <span class="hero__eyebrow">🎓 Centro de Tareas Dirigidas</span>
-        <h1>Refuerzo educativo para formar<br><span id="typed-hero" class="text-gradient" style="color:#FFC93C;">el futuro del país.</span></h1>
-        <p class="lead">En un país que necesita fortalecer su educación, ofrecemos acompañamiento académico integral para niños y jóvenes. Nuestra metodología personalizada desarrolla habilidades, confianza y hábitos de estudio que transforman vidas.</p>
-        <div class="hero__actions">
-          <a href="#planes" class="btn btn--primary">Inscribirme ahora</a>
-          <a href="#" class="btn btn--whatsapp" data-whatsapp="Hola Genio Visión, quiero inscribirme.">💬 WhatsApp</a>
-          <a href="#recursos" class="btn btn--ghost">Ver recursos gratis</a>
-        </div>
-        <div class="hero__stats">
-          <div class="hero__stat"><b><span data-countup="480">0</span>+</b><span>Estudiantes atendidos</span></div>
-          <div class="hero__stat"><b><span data-countup="12">0</span></b><span>Áreas académicas</span></div>
-          <div class="hero__stat"><b><span data-countup="98">0</span>%</b><span>Representantes satisfechos</span></div>
-        </div>
-      </div>
-      <div class="hero__visual">
-        <div class="hero__frame">
-          <img src="https://github.com/jhonmalorne/GenioVision/blob/main/fachadalocal.jpg?raw=true" alt="Fachada del centro Genio Visión" />
-        </div>
-        <div class="hero__card hero__card--1"><strong>🌟 Método propio</strong><br><small>Piaget + Ausubel</small></div>
-        <div class="hero__card hero__card--2"><strong>👨‍👩‍👧 Seguimiento</strong><br><small>a representantes</small></div>
-      </div>
-    </div>
-    <svg class="hero__waves" viewBox="0 0 1440 120" preserveAspectRatio="none"><path fill="#F5FAFF" d="M0,64L80,58.7C160,53,320,43,480,53.3C640,64,800,96,960,96C1120,96,1280,64,1360,48L1440,32L1440,120L0,120Z"></path></svg>
-  </section>
+            // Capa 1: OpenStreetMap (Estándar/Calles)
+            const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            });
 
-  <div class="trust-strip">
-    <div class="container trust-strip__inner">
-      <div class="trust-strip__item"><b>Lun–Vie</b>8:00 am – 6:00 pm</div>
-      <div class="trust-strip__item"><b>Presencial</b>y virtual</div>
-      <div class="trust-strip__item"><b>Grupos pequeños</b>e individual</div>
-      <div class="trust-strip__item"><b>Piaget · Ausubel</b>Montessori · Vygotsky</div>
-    </div>
-  </div>
+            // Capa 2: OpenTopoMap (Relieve, Montañas, Ríos - Ideal para UNESCO/Geografía)
+            const topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap'
+            });
 
-  <!-- SERVICIOS -->
-  <section class="section" id="servicios">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Nuestros servicios</span>
-        <h2>Acompañamiento en cada etapa académica</h2>
-        <p>Programas diseñados para cada nivel y área de aprendizaje.</p>
-      </div>
-      <div class="grid grid--4" id="services-grid">
-        <div class="card reveal card--tint-blue"><div class="card__icon">🧒</div><h3>Educación Inicial</h3><p>Estimulación temprana y hábitos base de aprendizaje.</p></div>
-        <div class="card reveal card--tint-blue"><div class="card__icon">📘</div><h3>Primaria</h3><p>Refuerzo integral en todas las asignaturas.</p></div>
-        <div class="card reveal card--tint-yellow"><div class="card__icon">🎒</div><h3>Liceo</h3><p>Acompañamiento en bachillerato y preparación de exámenes.</p></div>
-        <div class="card reveal"><div class="card__icon">🎓</div><h3>Universitario</h3><p>Asesoría en materias, tesis y trabajos de investigación.</p></div>
-        <div class="card reveal card--tint-blue"><div class="card__icon">🇬🇧</div><h3>Inglés</h3><p>Comprensión, conversación y gramática por niveles.</p></div>
-        <div class="card reveal card--tint-yellow"><div class="card__icon">➗</div><h3>Matemáticas</h3><p>Del cálculo básico al pensamiento lógico avanzado.</p></div>
-        <div class="card reveal"><div class="card__icon">✍️</div><h3>Escritura</h3><p>Redacción, ortografía y producción de textos.</p></div>
-        <div class="card reveal card--tint-blue"><div class="card__icon">🎤</div><h3>Oratoria</h3><p>Confianza para hablar y exponer en público.</p></div>
-        <div class="card reveal card--tint-yellow"><div class="card__icon">📖</div><h3>Comprensión lectora</h3><p>Estrategias para leer con análisis y velocidad.</p></div>
-        <div class="card reveal"><div class="card__icon">📝</div><h3>Preparación de tareas</h3><p>Acompañamiento diario en asignaciones escolares.</p></div>
-        <div class="card reveal card--tint-blue"><div class="card__icon">📈</div><h3>Nivelación académica</h3><p>Cierre de brechas de aprendizaje por materia.</p></div>
-        <div class="card reveal card--tint-yellow"><div class="card__icon">⏰</div><h3>Hábitos de estudio</h3><p>Organización, disciplina y técnicas de estudio.</p></div>
-      </div>
-    </div>
-  </section>
+            // Añadir topografía por defecto por su valor educativo
+            topoLayer.addTo(map);
 
-  <!-- METODOLOGÍA -->
-  <section class="section section--alt" id="metodologia">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Metodología</span>
-        <h2>Ciencia del aprendizaje aplicada al aula</h2>
-        <p>Cada actividad está fundamentada en teorías pedagógicas comprobadas.</p>
-      </div>
-      <div class="method-grid">
-        <div class="method-card reveal"><span class="num">01</span><h3>Piaget</h3><p>Aprendizaje según la etapa de desarrollo cognitivo del niño.</p></div>
-        <div class="method-card reveal"><span class="num">02</span><h3>Ausubel</h3><p>Aprendizaje significativo: conectar lo nuevo con lo que ya se sabe.</p></div>
-        <div class="method-card reveal"><span class="num">03</span><h3>Aprendizaje activo</h3><p>El estudiante construye su conocimiento haciendo, no memorizando.</p></div>
-        <div class="method-card reveal"><span class="num">04</span><h3>Juego y gamificación</h3><p>Retos, puntos e insignias que motivan el progreso.</p></div>
-        <div class="method-card reveal"><span class="num">05</span><h3>Tecnología</h3><p>Tablets y recursos digitales como apoyo, no como sustituto.</p></div>
-        <div class="method-card reveal"><span class="num">06</span><h3>Trabajo colaborativo</h3><p>Proyectos en equipo que desarrollan habilidades sociales.</p></div>
-        <div class="method-card reveal"><span class="num">07</span><h3>Material manipulativo</h3><p>Objetos concretos para entender conceptos abstractos.</p></div>
-        <div class="method-card reveal"><span class="num">08</span><h3>Reciclaje educativo</h3><p>Materiales reutilizados en proyectos de aprendizaje sostenible.</p></div>
-      </div>
-    </div>
-  </section>
+            // Control de capas (Interfaz excelente)
+            const baseMaps = {
+                "Mapa Físico (Relieve y Ríos)": topoLayer,
+                "Mapa Político (Calles y Ciudades)": streetLayer
+            };
+            L.control.layers(baseMaps).addTo(map);
 
-  <!-- HORARIOS -->
-  <section class="section" id="horarios">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Horarios</span>
-        <h2>Un horario para cada familia</h2>
-      </div>
-      <div class="timeline">
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-card"><h3>8:00 am – 12:00 pm</h3><p>Turno mañana — presencial, grupos pequeños</p></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-card"><h3>2:00 pm – 6:00 pm</h3><p>Turno tarde — presencial y virtual</p></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-card"><h3>Modalidad individual</h3><p>Sesiones 1 a 1 con seguimiento personalizado</p></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-card"><h3>Modalidad grupal</h3><p>Grupos reducidos para fomentar la colaboración</p></div></div>
-      </div>
-    </div>
-  </section>
+            // Variables para almacenar las capas GeoJSON
+            let geojsonLayer = null;
 
-  <!-- BENEFICIOS -->
-  <section class="section section--alt" id="beneficios">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Beneficios</span>
-        <h2>Lo que tu hijo o hija va a ganar</h2>
-      </div>
-      <div class="grid grid--3">
-        <div class="card reveal"><div class="card__icon">📊</div><h3>Mejor rendimiento</h3><p>Resultados medibles en calificaciones y comprensión.</p></div>
-        <div class="card reveal card--tint-yellow"><div class="card__icon">💪</div><h3>Más confianza</h3><p>Estudiantes que se sienten capaces de lograrlo.</p></div>
-        <div class="card reveal card--tint-blue"><div class="card__icon">⏱️</div><h3>Hábitos de estudio</h3><p>Rutinas que se mantienen dentro y fuera del centro.</p></div>
-        <div class="card reveal"><div class="card__icon">🤝</div><h3>Trabajo con representantes</h3><p>Comunicación constante sobre el progreso.</p></div>
-        <div class="card reveal card--tint-yellow"><div class="card__icon">🎯</div><h3>Seguimiento personalizado</h3><p>Cada estudiante avanza a su propio ritmo.</p></div>
-        <div class="card reveal card--tint-blue"><div class="card__icon">✅</div><h3>Evaluaciones</h3><p>Diagnósticos periódicos para medir el avance real.</p></div>
-      </div>
-    </div>
-  </section>
+            // URLs de los GeoJSON (usando raw.githubusercontent para evitar problemas de CORS)
+            const urls = {
+                ADM1: 'https://raw.githubusercontent.com/jhonmalorne/GenioVision/main/geoBoundaries-VEN-ADM1_simplified.geojson',
+                ADM2: 'https://raw.githubusercontent.com/jhonmalorne/GenioVision/main/geoBoundaries-VEN-ADM2_simplified.geojson'
+            };
 
-  <!-- PLANES -->
-  <section class="section" id="planes">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Planes</span>
-        <h2>Elige el paquete ideal para tu familia</h2>
-      </div>
-      <div class="plans">
-        <div class="plan-card reveal">
-          <h3>Paquete Piaget</h3>
-          <div class="plan-card__price">$8<span>/semana</span></div>
-          <ul>
-            <li>4 días a la semana</li>
-            <li>2 horas por sesión</li>
-            <li>Grupos pequeños</li>
-            <li>Seguimiento a representantes</li>
-          </ul>
-          <a href="#" class="btn btn--outline btn--block" data-whatsapp="Hola, quiero inscribirme en el Paquete Piaget.">Elegir plan</a>
-        </div>
-        <div class="plan-card plan-card--featured reveal">
-          <span class="plan-card__badge">Más elegido</span>
-          <h3>Paquete Ausubel</h3>
-          <div class="plan-card__price">$10<span>/semana</span></div>
-          <ul>
-            <li>5 días a la semana</li>
-            <li>2 horas por sesión</li>
-            <li>Grupos pequeños o individual</li>
-            <li>Evaluaciones periódicas incluidas</li>
-          </ul>
-          <a href="#" class="btn btn--primary btn--block" data-whatsapp="Hola, quiero inscribirme en el Paquete Ausubel.">Elegir plan</a>
-        </div>
-      </div>
-    </div>
-  </section>
+            // Estilos para los polígonos
+            const styleFeature = (feature) => {
+                return {
+                    fillColor: '#00acc1',
+                    weight: 2,
+                    opacity: 1,
+                    color: 'white',
+                    dashArray: '3',
+                    fillOpacity: 0.4
+                };
+            };
 
-  <!-- GALERÍA -->
-  <section class="section section--alt" id="galeria">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Galería</span>
-        <h2>Así vivimos el aprendizaje</h2>
-      </div>
-      <div class="gallery-filters">
-        <button class="tab-btn is-active" data-gallery-filter="todos">Todas</button>
-        <button class="tab-btn" data-gallery-filter="instalaciones">Instalaciones</button>
-        <button class="tab-btn" data-gallery-filter="clases">Clases</button>
-        <button class="tab-btn" data-gallery-filter="actividades">Actividades</button>
-      </div>
-      <div class="gallery-grid" id="gallery-grid"></div>
-    </div>
-  </section>
+            // Eventos al interactuar con las regiones
+            const onEachFeature = (feature, layer) => {
+                layer.on({
+                    mouseover: (e) => {
+                        const layer = e.target;
+                        layer.setStyle({
+                            fillColor: '#ff9800',
+                            fillOpacity: 0.7
+                        });
+                        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                            layer.bringToFront();
+                        }
+                    },
+                    mouseout: (e) => {
+                        if(geojsonLayer) {
+                            geojsonLayer.resetStyle(e.target);
+                        }
+                    }
+                });
 
-  <!-- RECURSOS GRATUITOS -->
-  <section class="section" id="recursos">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Biblioteca de recursos</span>
-        <h2>Material descargable 100% gratuito</h2>
-        <p>Fichas listas para imprimir, organizadas por área y edad recomendada.</p>
-      </div>
-      <div class="resources-toolbar">
-        <div class="search-box">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
-          <input type="text" id="resource-search" placeholder="Buscar recurso (ej. sumas, navidad, trazos...)" />
-        </div>
-        <select class="filter-select" id="filter-area"><option value="todas">Todas las áreas</option></select>
-        <select class="filter-select" id="filter-nivel">
-          <option value="todos">Todos los niveles</option>
-          <option value="Inicial">Inicial</option>
-          <option value="Primaria">Primaria</option>
-          <option value="Docentes">Docentes</option>
-        </select>
-      </div>
-      <div class="resources-grid" id="resources-grid"></div>
-    </div>
-  </section>
+                // Extraer el nombre de la región basado en las propiedades de geoBoundaries
+                const regionName = feature.properties.shapeName || feature.properties.name || "Región sin nombre";
+                
+                // Construir un Popup Educativo basado en ABP y exploración
+                const popupContent = `
+                    <div class="info-panel">
+                        <h4><i class="fas fa-map-pin"></i> ${regionName}</h4>
+                        <p><strong>Reto de Aprendizaje (UNESCO):</strong></p>
+                        <ul>
+                            <li>Identifica el principal cuerpo de agua o río de esta entidad.</li>
+                            <li>Investiga su formación topográfica (montañas, llanuras o costa).</li>
+                            <li>¿Qué actividad económica predomina aquí?</li>
+                        </ul>
+                    </div>
+                `;
+                layer.bindPopup(popupContent);
+            };
 
-  <!-- MAPA DE VENEZUELA -->
-  <section class="section section--alt" id="mapa">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Venezuela interactiva</span>
-        <h2>Explora los 24 estados de Venezuela</h2>
-        <p>Haz clic en un estado para conocer su capital, cultura, gastronomía y responder una trivia.</p>
-      </div>
-      <div class="map-shell">
-        <div style="position:relative;">
-          <div id="map-venezuela"></div>
-          <button class="icon-btn" id="map-fullscreen-btn" style="position:absolute;top:14px;right:14px;background:#fff;" aria-label="Pantalla completa">⛶</button>
-        </div>
-        <div class="map-panel">
-          <div class="map-search">
-            <input type="text" class="filter-select" style="width:100%;" id="map-search-input" placeholder="Buscar estado o capital..." />
-            <div id="map-search-results" style="display:none;margin-top:.6rem;"></div>
-          </div>
-          <div id="map-panel-content"></div>
-          <div class="map-legend" id="map-legend"></div>
-        </div>
-      </div>
-    </div>
-  </section>
+            // Función para cargar los datos
+            const loadGeoData = async (type) => {
+                try {
+                    // Remover capa anterior si existe
+                    if (geojsonLayer) {
+                        map.removeLayer(geojsonLayer);
+                    }
 
-  <!-- QUIZ EDUCATIVO -->
-  <section class="section" id="quiz">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Juega y aprende</span>
-        <h2>Centro de juegos educativos</h2>
-      </div>
-      <div class="quiz-hub">
-        <div class="quiz-mode-card reveal" data-quiz-mode="trivia"><div class="card__icon">❓</div><h3>Trivia</h3><p>Preguntas de opción múltiple</p></div>
-        <div class="quiz-mode-card reveal" data-quiz-mode="memoria"><div class="card__icon">🧠</div><h3>Memoria</h3><p>Encuentra las parejas</p></div>
-        <div class="quiz-mode-card reveal" data-quiz-mode="arrastrar"><div class="card__icon">🎯</div><h3>Arrastrar y soltar</h3><p>Clasifica los elementos</p></div>
-        <div class="quiz-mode-card reveal" data-quiz-mode="ruleta"><div class="card__icon">🎡</div><h3>Ruleta</h3><p>Gira y responde el reto</p></div>
-      </div>
+                    const response = await fetch(urls[type]);
+                    const data = await response.json();
 
-      <div class="quiz-stage" id="stage-trivia">
-        <div class="quiz-score"><span id="trivia-score-label">Puntos: 0</span><span id="trivia-progress-label">Pregunta 1/5</span></div>
-        <div class="quiz-progress"><div class="quiz-progress-bar" id="trivia-progress-bar"></div></div>
-        <h3 id="trivia-question"></h3>
-        <div class="quiz-options" id="trivia-options"></div>
-        <div class="badge-row" id="trivia-badges"></div>
-      </div>
+                    geojsonLayer = L.geoJSON(data, {
+                        style: styleFeature,
+                        onEachFeature: onEachFeature
+                    }).addTo(map);
 
-      <div class="quiz-stage" id="stage-memoria">
-        <div class="quiz-score"><span id="memoria-tries-label">Intentos: 0</span><span id="memoria-matches-label">Parejas: 0/8</span></div>
-        <div class="memory-grid" id="memory-grid"></div>
-      </div>
+                } catch (error) {
+                    console.error("Error al cargar los datos geográficos: ", error);
+                    // Fallback visual si falla el fetch (ej. sin conexión a internet)
+                    L.popup()
+                        .setLatLng([7.5229, -66.1916])
+                        .setContent("Fallo al cargar el mapa GeoJSON. Por favor, revisa la conexión.")
+                        .openOn(map);
+                }
+            };
 
-      <div class="quiz-stage" id="stage-arrastrar">
-        <h3 style="margin-bottom:1rem;">Clasifica cada palabra en su categoría</h3>
-        <div class="dragdrop-row" id="dragdrop-chips"></div>
-        <div class="grid grid--2">
-          <div><h3 style="font-size:1rem;">Animales</h3><div class="drop-zone" id="zone-animales" data-zone="animales"></div></div>
-          <div><h3 style="font-size:1rem;">Números</h3><div class="drop-zone" id="zone-numeros" data-zone="numeros"></div></div>
-        </div>
-        <p id="dragdrop-feedback" style="margin-top:1rem;font-weight:700;"></p>
-      </div>
+            // Marcador de la Sede Principal
+            const customIcon = L.icon({
+                iconUrl: 'https://github.com/jhonmalorne/GenioVision/blob/main/icono%20maps.png?raw=true',
+                iconSize: [40, 40],
+                iconAnchor: [20, 40],
+                popupAnchor: [0, -40]
+            });
 
-      <div class="quiz-stage" id="stage-ruleta">
-        <div class="wheel-wrap">
-          <svg id="ruleta-svg" width="280" height="280" viewBox="0 0 280 280"></svg>
-          <button class="btn btn--primary" id="ruleta-btn">Girar la ruleta 🎡</button>
-          <p id="ruleta-result" style="font-weight:700;"></p>
-        </div>
-      </div>
-    </div>
-  </section>
+            // Marcador fijado en el municipio base operativo
+            const sedeMarker = L.marker([10.1913, -67.9351], {icon: customIcon}).addTo(map);
+            sedeMarker.bindPopup(`
+                <div style="text-align:center;">
+                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/logo%20fondo%20celeste.png?raw=true" style="width:80px; margin-bottom:10px;">
+                    <h4 style="color:#0d47a1; margin:0;">Genio Visión Sede Principal</h4>
+                    <p style="margin:5px 0 0 0; font-size:12px;">Centro de Tareas Dirigidas</p>
+                </div>
+            `);
 
-  <!-- DOCENTES -->
-  <section class="section section--alt" id="docentes">
-    <div class="container split-panel">
-      <div class="reveal">
-        <span class="eyebrow">Para docentes</span>
-        <h2>Material y planificación lista para usar</h2>
-        <p>Bitácoras, formatos de planificación y recursos pensados para facilitar tu labor diaria.</p>
-        <ul class="checklist">
-          <li><i>✓</i><span>Bitácora de seguimiento semanal descargable</span></li>
-          <li><i>✓</i><span>Plantillas de planificación por competencias</span></li>
-          <li><i>✓</i><span>Banco de recursos organizados por área</span></li>
-        </ul>
-        <a href="#recursos" class="btn btn--primary" style="margin-top:1.4rem;">Ir a la biblioteca de recursos</a>
-      </div>
-      <div class="reveal">
-        <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen4.jpg?raw=true" alt="Docentes trabajando" style="border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);" />
-      </div>
-    </div>
-  </section>
+            // Iniciar con la capa de Estados (ADM1)
+            loadGeoData('ADM1');
 
-  <!-- PADRES -->
-  <section class="section" id="padres">
-    <div class="container split-panel">
-      <div class="reveal" style="order:2;">
-        <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen5.jpg?raw=true" alt="Familia acompañando el aprendizaje" style="border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);" />
-      </div>
-      <div class="reveal" style="order:1;">
-        <span class="eyebrow">Para padres y representantes</span>
-        <h2>Consejos para acompañar el aprendizaje en casa</h2>
-        <ul class="checklist">
-          <li><i>✓</i><span><b>Hábitos:</b> establece un horario fijo de estudio diario.</span></li>
-          <li><i>✓</i><span><b>Tiempo de estudio:</b> sesiones cortas y frecuentes rinden mejor que largas maratónicas.</span></li>
-          <li><i>✓</i><span><b>Alimentación:</b> una dieta balanceada mejora la concentración.</span></li>
-          <li><i>✓</i><span><b>Sueño:</b> entre 9 y 11 horas para niños en edad escolar.</span></li>
-          <li><i>✓</i><span><b>Motivación:</b> celebra el esfuerzo, no solo el resultado.</span></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIOS -->
-  <section class="section section--alt" id="testimonios">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Testimonios</span>
-        <h2>Familias que confían en Genio Visión</h2>
-      </div>
-      <div class="swiper testimonial-swiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide"><div class="testimonial-card"><div class="testimonial-card__stars">★★★★★</div><p>"Mi hijo llegó con miedo a las matemáticas y ahora las disfruta. El cambio de actitud se nota en toda la casa."</p><div class="testimonial-card__person"><div class="avatar-badge">MG</div><div><b>María G.</b><br><small>Representante</small></div></div></div></div>
-          <div class="swiper-slide"><div class="testimonial-card"><div class="testimonial-card__stars">★★★★★</div><p>"El seguimiento constante y la comunicación con nosotros como padres marca la diferencia frente a otras opciones."</p><div class="testimonial-card__person"><div class="avatar-badge">JR</div><div><b>José R.</b><br><small>Representante</small></div></div></div></div>
-          <div class="swiper-slide"><div class="testimonial-card"><div class="testimonial-card__stars">★★★★★</div><p>"Las tías son pacientes y creativas. Mi hija espera con ganas el día de ir a Genio Visión."</p><div class="testimonial-card__person"><div class="avatar-badge">CL</div><div><b>Carla L.</b><br><small>Representante</small></div></div></div></div>
-        </div>
-        <div class="swiper-pagination"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="section" id="faq">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Preguntas frecuentes</span>
-        <h2>¿Tienes dudas? Aquí te respondemos</h2>
-      </div>
-      <div class="accordion">
-        <div class="accordion-item"><button class="accordion-trigger">¿A partir de qué edad reciben estudiantes? <span class="plus">+</span></button><div class="accordion-panel"><p>Recibimos estudiantes desde educación inicial hasta nivel universitario, con metodologías adaptadas a cada etapa.</p></div></div>
-        <div class="accordion-item"><button class="accordion-trigger">¿Las clases son presenciales o virtuales? <span class="plus">+</span></button><div class="accordion-panel"><p>Ofrecemos ambas modalidades, con horarios en la mañana y en la tarde, de lunes a viernes.</p></div></div>
-        <div class="accordion-item"><button class="accordion-trigger">¿Cómo es el seguimiento a los representantes? <span class="plus">+</span></button><div class="accordion-panel"><p>Entregamos reportes periódicos de avance y mantenemos comunicación directa por WhatsApp.</p></div></div>
-        <div class="accordion-item"><button class="accordion-trigger">¿Puedo cambiar de plan en cualquier momento? <span class="plus">+</span></button><div class="accordion-panel"><p>Sí, puedes ajustar el plan según la evolución académica del estudiante y las necesidades familiares.</p></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACTO -->
-  <section class="section section--alt" id="contacto">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Contacto</span>
-        <h2>Conversemos sobre tu próximo paso</h2>
-      </div>
-      <div class="contact-grid">
-        <form id="contact-form" novalidate>
-          <div class="form-success" id="contact-success">¡Gracias! Te redirigimos a WhatsApp para completar tu solicitud.</div>
-          <div class="form-field"><label for="f-nombre">Nombre completo</label><input type="text" id="f-nombre" required /><span class="form-error">Campo requerido</span></div>
-          <div class="form-field"><label for="f-email">Correo electrónico</label><input type="email" id="f-email" required /><span class="form-error">Correo inválido</span></div>
-          <div class="form-field"><label for="f-telefono">Teléfono</label><input type="tel" id="f-telefono" required /><span class="form-error">Teléfono inválido</span></div>
-          <div class="form-field"><label for="f-servicio">Área de interés</label>
-            <select id="f-servicio" required>
-              <option value="">Selecciona una opción</option>
-              <option>Educación Inicial</option><option>Primaria</option><option>Liceo</option>
-              <option>Universitario</option><option>Inglés</option><option>Matemáticas</option>
-            </select><span class="form-error">Selecciona una opción</span>
-          </div>
-          <div class="form-field"><label for="f-mensaje">Mensaje</label><textarea id="f-mensaje" required></textarea><span class="form-error">Escribe un mensaje más detallado</span></div>
-          <button type="submit" class="btn btn--primary btn--block">Enviar por WhatsApp</button>
-        </form>
-        <div id="map-contacto"></div>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="container footer-grid">
-    <div>
-      <div class="brand" style="color:#fff;"><img src="https://github.com/jhonmalorne/GenioVision/blob/main/logo.png?raw=true" alt="" /><span>Genio Visión</span></div>
-      <p style="margin-top:1rem;color:rgba(255,255,255,.7);">Centro de tareas dirigidas comprometido con formar el futuro académico de Venezuela.</p>
-      <div class="footer-social">
-        <a href="#" class="icon-btn" aria-label="Instagram">📷</a>
-        <a href="#" class="icon-btn" aria-label="Facebook">📘</a>
-        <a href="#" data-whatsapp="Hola Genio Visión" class="icon-btn" aria-label="WhatsApp">💬</a>
-      </div>
-    </div>
-    <div><h4>Navegación</h4><ul><li><a href="#servicios">Servicios</a></li><li><a href="#planes">Planes</a></li><li><a href="#recursos">Recursos</a></li><li><a href="#mapa">Mapa VE</a></li></ul></div>
-    <div><h4>Comunidad</h4><ul><li><a href="#docentes">Docentes</a></li><li><a href="#padres">Padres</a></li><li><a href="#testimonios">Testimonios</a></li><li><a href="#faq">FAQ</a></li></ul></div>
-    <div><h4>Contacto</h4><ul><li>📱 +58 424-4517644</li><li>✉️ mariannyt24@gmail.com</li><li>🕐 Lun–Vie, 8am–6pm</li></ul></div>
-  </div>
-  <div class="container footer-bottom">
-    <span>© 2026 Genio Visión. Todos los derechos reservados.</span>
-    <span><a href="#">Política de privacidad</a></span>
-  </div>
-</footer>
-
-<!-- Lightbox de galería -->
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close" id="lightbox-close" aria-label="Cerrar">✕</button>
-  <button class="lightbox-nav lightbox-nav--prev" id="lightbox-prev" aria-label="Anterior">‹</button>
-  <img id="lightbox-img" src="" alt="" />
-  <button class="lightbox-nav lightbox-nav--next" id="lightbox-next" aria-label="Siguiente">›</button>
-</div>
-
-<!-- Botones flotantes -->
-<div class="float-actions">
-  <a href="#" class="float-btn float-btn--wa" data-whatsapp="Hola Genio Visión, quisiera información." aria-label="WhatsApp">💬</a>
-  <button class="float-btn float-btn--top" aria-label="Volver arriba">↑</button>
-</div>
-
-<!-- Librerías CDN (JS) -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/countup.js@2.8.0/dist/countUp.umd.js"></script>
-<script src="https://cdn.jsdelivr.net/particles.js@2.0.0/particles.min.js"></script>
-
-<!-- Datos y lógica propia -->
-<script src="data/estados.js"></script>
-<script src="script.js"></script>
-<script src="maps.js"></script>
-<script src="gallery.js"></script>
-<script src="downloads.js"></script>
-<script src="contact.js"></script>
-<script src="quiz.js"></script>
+            // Evento de filtro
+            document.getElementById('mapFilter').addEventListener('change', (e) => {
+                loadGeoData(e.target.value);
+            });
+        });
+    </script>
 </body>
 </html>
