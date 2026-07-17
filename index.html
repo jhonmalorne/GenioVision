@@ -1,1149 +1,403 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Centro de Tareas Dirigidas Genio Visión. Refuerzo educativo integral con metodologías innovadoras en Venezuela.">
-    <meta name="theme-color" content="#0d47a1">
-    <title>Genio Visión | Centro de Tareas Dirigidas</title>
-    
-    <!-- Fuentes de Google -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Iconos FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-
-    <style>
-        /* Variables CSS para consistencia */
-        :root {
-            --primary-color: #0d47a1;
-            --secondary-color: #00acc1;
-            --accent-color: #ff9800;
-            --text-dark: #333333;
-            --text-light: #666666;
-            --bg-light: #f5f7fa;
-            --white: #ffffff;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --radius: 12px;
-        }
-
-        /* Reset y estilos base */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            color: var(--text-dark);
-            background-color: var(--bg-light);
-            line-height: 1.6;
-        }
-
-        h1, h2, h3, h4 {
-            font-family: 'Nunito', sans-serif;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* Utilidades */
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .section-padding {
-            padding: 80px 0;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            bottom: -10px;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background-color: var(--secondary-color);
-            border-radius: 2px;
-        }
-
-        .section-subtitle {
-            color: var(--text-light);
-            font-size: 1.1rem;
-            margin-bottom: 50px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: var(--transition);
-            cursor: pointer;
-            border: none;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: var(--white);
-            box-shadow: 0 4px 15px rgba(13, 71, 161, 0.3);
-        }
-
-        .btn-primary:hover {
-            background-color: #0a367c;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(13, 71, 161, 0.4);
-        }
-
-        .btn-accent {
-            background-color: var(--accent-color);
-            color: var(--white);
-            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
-        }
-
-        .btn-accent:hover {
-            background-color: #e68a00;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
-        }
-
-        /* Navbar */
-        header {
-            background-color: var(--white);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            transition: var(--transition);
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 80px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo img {
-            height: 50px;
-            object-fit: contain;
-        }
-
-        .logo h1 {
-            font-size: 1.5rem;
-            margin: 0;
-            color: var(--primary-color);
-            letter-spacing: 1px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            font-weight: 500;
-            color: var(--text-dark);
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -5px;
-            width: 0;
-            height: 2px;
-            background-color: var(--secondary-color);
-            transition: var(--transition);
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            cursor: pointer;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding-top: 120px;
-            padding-bottom: 80px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4ebf5 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 40px;
-        }
-
-        .hero-content {
-            flex: 1;
-            max-width: 600px;
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-
-        .hero-title span {
-            color: var(--secondary-color);
-        }
-
-        .hero-text {
-            font-size: 1.1rem;
-            color: var(--text-light);
-            margin-bottom: 30px;
-        }
-
-        .hero-image {
-            flex: 1;
-            position: relative;
-        }
-
-        .hero-image img {
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-blob {
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            width: 100%;
-            height: 100%;
-            background-color: var(--secondary-color);
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            z-index: 1;
-            opacity: 0.2;
-        }
-
-        /* Services Section */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .service-card {
-            background: var(--white);
-            padding: 40px 30px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            text-align: center;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            border-bottom: 4px solid transparent;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            border-bottom-color: var(--secondary-color);
-        }
-
-        .service-icon {
-            width: 70px;
-            height: 70px;
-            background: rgba(0, 172, 193, 0.1);
-            color: var(--secondary-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 20px;
-            transition: var(--transition);
-        }
-
-        .service-card:hover .service-icon {
-            background: var(--secondary-color);
-            color: var(--white);
-        }
-
-        .service-card h3 {
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-
-        /* Pricing Section */
-        .pricing {
-            background-color: var(--white);
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            justify-content: center;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .pricing-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 40px;
-            text-align: center;
-            border: 1px solid #eee;
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .pricing-card:hover {
-            transform: scale(1.02);
-            border-color: var(--secondary-color);
-        }
-
-        .pricing-header {
-            margin-bottom: 30px;
-        }
-
-        .pricing-title {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        .pricing-subtitle {
-            color: var(--secondary-color);
-            font-weight: 600;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .pricing-price {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: var(--primary-color);
-            margin: 20px 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .pricing-price span {
-            font-size: 1.5rem;
-            margin-top: 10px;
-        }
-
-        .pricing-features {
-            text-align: left;
-            margin-bottom: 30px;
-        }
-
-        .pricing-features li {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .pricing-features li i {
-            color: var(--accent-color);
-        }
-
-        /* Resources Section */
-        .resources-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .resource-box {
-            background: var(--white);
-            padding: 30px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-        }
-
-        .resource-box h3 {
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 2px solid var(--bg-light);
-            padding-bottom: 10px;
-        }
-
-        .resource-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .resource-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 12px 15px;
-            background: var(--bg-light);
-            border-radius: 8px;
-            transition: var(--transition);
-        }
-
-        .resource-item:hover {
-            background: rgba(0, 172, 193, 0.1);
-            transform: translateX(5px);
-        }
-
-        .resource-icon {
-            color: #e53935;
-            font-size: 1.5rem;
-        }
-
-        .resource-name {
-            flex: 1;
-            font-weight: 500;
-            font-size: 0.95rem;
-            color: var(--text-dark);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .resource-download {
-            color: var(--primary-color);
-        }
-
-        /* Interactive Map Section */
-        .map-section {
-            background-color: var(--white);
-            padding-bottom: 0;
-        }
-
-        .map-controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .map-select {
-            padding: 12px 20px;
-            border-radius: 30px;
-            border: 2px solid var(--secondary-color);
-            background-color: var(--white);
-            font-family: inherit;
-            font-weight: 600;
-            color: var(--primary-color);
-            outline: none;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-        }
-
-        .map-container {
-            width: 100%;
-            height: 600px;
-            border-radius: var(--radius) var(--radius) 0 0;
-            box-shadow: var(--shadow);
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Información de la región en el mapa (Panel lateral/Popup) */
-        .info-panel {
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            min-width: 200px;
-        }
-
-        .info-panel h4 {
-            color: var(--primary-color);
-            margin-bottom: 8px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-        }
-
-        .info-panel ul {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-
-        .info-panel li {
-            margin-bottom: 5px;
-        }
-
-        /* Gallery Section */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .gallery-item {
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            position: relative;
-            aspect-ratio: 4/3;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--primary-color);
-            color: var(--white);
-            padding: 60px 0 20px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-about img {
-            height: 60px;
-            margin-bottom: 20px;
-            background: white;
-            padding: 5px;
-            border-radius: 8px;
-        }
-
-        .footer-title {
-            color: var(--white);
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .footer-title::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 40px;
-            height: 2px;
-            background-color: var(--secondary-color);
-        }
-
-        .contact-info li {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 15px;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .contact-info i {
-            color: var(--secondary-color);
-            margin-top: 5px;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.6);
-            font-size: 0.9rem;
-        }
-
-        /* Botón Flotante WhatsApp */
-        .whatsapp-float {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            bottom: 40px;
-            right: 40px;
-            background-color: #25d366;
-            color: #FFF;
-            border-radius: 50px;
-            text-align: center;
-            font-size: 30px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            color: white;
-        }
-
-        /* Responsividad */
-        @media (max-width: 992px) {
-            .hero-container {
-                flex-direction: column;
-                text-align: center;
-            }
-            .hero-title {
-                font-size: 2.8rem;
-            }
-            .resources-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none; /* Mobile menu logic can be extended */
-            }
-            .mobile-menu-btn {
-                display: block;
-            }
-            .section-padding {
-                padding: 50px 0;
-            }
-            .hero {
-                padding-top: 100px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Genio Visión · Centro de Tareas Dirigidas</title>
+  <!-- SEO Meta -->
+  <meta name="description" content="Centro de Tareas Dirigidas Genio Visión: refuerzo educativo integral para niños y jóvenes en Venezuela. Metodología personalizada, horarios flexibles y recursos gratuitos.">
+  <link rel="canonical" href="https://jhonmalorne.github.io/GenioVision/">
+  <!-- PWA / icons -->
+  <link rel="icon" href="https://github.com/jhonmalorne/GenioVision/blob/main/logo.png?raw=true" type="image/png">
+  <link rel="apple-touch-icon" href="https://github.com/jhonmalorne/GenioVision/blob/main/logo.png?raw=true">
+  <meta name="theme-color" content="#0A3A5E">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Genio Visión · Centro de Tareas Dirigidas">
+  <meta property="og:description" content="Refuerzo educativo para formar el futuro del país. Acompañamiento personalizado, materiales gratis y mapa educativo interactivo.">
+  <meta property="og:image" content="https://github.com/jhonmalorne/GenioVision/blob/main/logo%20fondo%20celeste.png?raw=true">
+  <meta property="og:url" content="https://jhonmalorne.github.io/GenioVision/">
+  <!-- Leaflet CSS CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Font Awesome & Google Fonts (interfaz moderna) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter', sans-serif; background:#f5f9fe; color:#0A1E2F; scroll-behavior:smooth; }
+    a { text-decoration:none; color:inherit; }
+    .container { max-width:1280px; margin:0 auto; padding:0 1.5rem; }
+    /* header profesional */
+    header { background: linear-gradient(145deg, #0A3A5E 0%, #1C5A7A 100%); color:#fff; padding:0.8rem 0; box-shadow:0 8px 20px rgba(0,20,40,0.25); position:sticky; top:0; z-index:1000; }
+    .header-grid { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.8rem; }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand img { height:52px; width:auto; border-radius:12px; background:rgba(255,255,255,0.1); padding:4px; }
+    .brand h1 { font-size:1.4rem; font-weight:700; letter-spacing:-0.5px; }
+    .brand span { font-weight:300; font-size:0.8rem; opacity:0.8; display:block; }
+    .nav-links { display:flex; gap:1.8rem; flex-wrap:wrap; font-weight:500; font-size:0.95rem; }
+    .nav-links a { transition:0.2s; border-bottom:2px solid transparent; padding-bottom:4px; }
+    .nav-links a:hover { border-bottom-color:#FFD966; color:#FFD966; }
+    .cta-header { background:#FFB347; color:#0A1E2F; padding:0.4rem 1.2rem; border-radius:60px; font-weight:600; font-size:0.9rem; box-shadow:0 4px 8px rgba(0,0,0,0.1); }
+    /* hero */
+    .hero { background: linear-gradient(135deg, #E3F0FA 0%, #C5E0F0 100%); padding:3rem 0 2.5rem; }
+    .hero-grid { display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; align-items:center; }
+    .hero h2 { font-size:2.8rem; font-weight:800; line-height:1.2; color:#0A3A5E; }
+    .hero h2 i { color:#F5A623; }
+    .hero p { font-size:1.2rem; margin:1.2rem 0; color:#1A3A50; }
+    .hero img { width:100%; max-height:280px; object-fit:contain; border-radius:28px; box-shadow:0 20px 30px -8px rgba(0,40,70,0.2); background:white; padding:0.4rem; }
+    .btn-group { display:flex; flex-wrap:wrap; gap:1rem; margin-top:1.8rem; }
+    .btn { padding:0.7rem 1.8rem; border-radius:60px; font-weight:600; transition:0.25s; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px; }
+    .btn-primary { background:#0A3A5E; color:#fff; }
+    .btn-primary:hover { background:#1C5A7A; transform:scale(1.02); }
+    .btn-outline { background:transparent; border:2px solid #0A3A5E; color:#0A3A5E; }
+    .btn-outline:hover { background:#0A3A5E; color:#fff; }
+    .btn-whatsapp { background:#25D366; color:#fff; }
+    .btn-whatsapp:hover { background:#1DA851; }
+    /* secciones */
+    section { padding:3.5rem 0; }
+    .section-title { font-size:2.2rem; font-weight:700; margin-bottom:2rem; color:#0A3A5E; position:relative; }
+    .section-title:after { content:''; display:block; width:70px; height:5px; background:#F5A623; margin-top:0.5rem; border-radius:10px; }
+    .grid-3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:2rem; }
+    .card { background:#fff; border-radius:28px; padding:1.8rem 1.5rem; box-shadow:0 12px 30px rgba(0,0,0,0.04); transition:0.25s; border:1px solid rgba(10,58,94,0.05); }
+    .card:hover { transform:translateY(-6px); box-shadow:0 18px 40px rgba(0,40,70,0.08); }
+    .card i { font-size:2.4rem; color:#F5A623; margin-bottom:0.8rem; }
+    .card h3 { font-size:1.3rem; margin-bottom:0.5rem; }
+    .price-badge { background:#0A3A5E; color:#fff; display:inline-block; padding:0.2rem 1rem; border-radius:60px; font-weight:600; font-size:1rem; margin-top:0.6rem; }
+    /* paquetes */
+    .paquetes-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:2rem; }
+    .paquete { background:#fff; border-radius:28px; padding:1.8rem; box-shadow:0 8px 24px rgba(0,0,0,0.02); border-top:6px solid #F5A623; transition:0.3s; }
+    .paquete:hover { box-shadow:0 16px 40px rgba(0,40,70,0.08); }
+    .paquete h4 { font-size:1.6rem; font-weight:700; }
+    .paquete .precio { font-size:2rem; font-weight:800; color:#0A3A5E; }
+    /* recursos */
+    .recursos-lista { display:flex; flex-wrap:wrap; gap:0.8rem 1.2rem; background:#fff; border-radius:28px; padding:1.5rem; }
+    .recursos-lista a { background:#EAF2F9; padding:0.3rem 1.2rem; border-radius:40px; font-size:0.9rem; display:inline-flex; align-items:center; gap:6px; }
+    .recursos-lista a i { color:#F5A623; }
+    /* galería */
+    .galeria { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1.2rem; }
+    .galeria img { width:100%; height:160px; object-fit:cover; border-radius:24px; box-shadow:0 6px 16px rgba(0,0,0,0.05); transition:0.2s; }
+    .galeria img:hover { transform:scale(1.02); }
+    /* mapa y educación UNESCO */
+    .mapa-section { background:#fff; border-radius:32px; padding:1.8rem; box-shadow:0 8px 24px rgba(0,0,0,0.02); }
+    #mapaVenezuela { height:380px; border-radius:24px; margin-top:0.5rem; z-index:1; }
+    .filtros-map { display:flex; flex-wrap:wrap; gap:0.8rem; margin:0.8rem 0 1rem; }
+    .filtros-map button { background:#EAF2F9; border:none; padding:0.4rem 1.4rem; border-radius:60px; font-weight:500; cursor:pointer; transition:0.2s; }
+    .filtros-map button.active { background:#0A3A5E; color:#fff; }
+    .info-educativa { background:#F0F7FC; padding:1.2rem; border-radius:20px; margin-top:1.2rem; display:flex; flex-wrap:wrap; gap:1.2rem; align-items:center; }
+    .info-educativa i { font-size:1.6rem; color:#0A3A5E; }
+    /* contacto */
+    .contacto-grid { display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; }
+    .contacto-item { display:flex; align-items:center; gap:1rem; padding:0.6rem 0; }
+    .contacto-item i { width:2.2rem; font-size:1.4rem; color:#F5A623; }
+    /* footer */
+    footer { background:#0A1E2F; color:#cbd5e1; padding:2rem 0; margin-top:2rem; }
+    .footer-grid { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; }
+    .footer-links a { margin:0 0.6rem; font-size:0.9rem; }
+    /* responsive */
+    @media (max-width:900px) { .hero-grid { grid-template-columns:1fr; text-align:center; } .contacto-grid{grid-template-columns:1fr;} }
+    @media (max-width:600px) { .brand h1 { font-size:1.1rem; } .nav-links { gap:0.8rem; font-size:0.8rem; } .hero h2 { font-size:2rem; } }
+    /* accesibilidad */
+    :focus { outline:3px solid #F5A623; outline-offset:3px; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; }
+  </style>
 </head>
 <body>
+  <header role="banner">
+    <div class="container header-grid">
+      <div class="brand">
+        <img src="https://github.com/jhonmalorne/GenioVision/blob/main/logo%20fondo%20celeste.png?raw=true" alt="Genio Visión logo celeste">
+        <div><h1>GENIO VISIÓN</h1><span>Centro de Tareas Dirigidas</span></div>
+      </div>
+      <nav class="nav-links" role="navigation" aria-label="Navegación principal">
+        <a href="#servicios">Servicios</a>
+        <a href="#paquetes">Paquetes</a>
+        <a href="#recursos">Recursos</a>
+        <a href="#mapa-educativo">Mapa Educativo</a>
+        <a href="#contacto">Contacto</a>
+        <a href="#contacto" class="cta-header"><i class="fas fa-phone-alt"></i> +58 424-4517644</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Navegación -->
-    <header>
-        <div class="container navbar">
-            <a href="#" class="logo">
-                <img src="https://github.com/jhonmalorne/GenioVision/blob/main/logo%20fondo%20celeste.png?raw=true" alt="Genio Visión Logo">
-                <h1>Genio Visión</h1>
-            </a>
-            <nav class="nav-links">
-                <a href="#inicio">Inicio</a>
-                <a href="#servicios">Servicios</a>
-                <a href="#paquetes">Paquetes</a>
-                <a href="#recursos">Recursos</a>
-                <a href="#mapa">Geografía Interactiva</a>
-                <a href="#galeria">Galería</a>
-                <a href="#contacto">Contacto</a>
-            </nav>
-            <i class="fas fa-bars mobile-menu-btn"></i>
+  <main>
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div>
+          <h2 id="hero-title">Refuerzo Educativo para <i>Formar el Futuro</i> del País</h2>
+          <p>En un país que necesita fortalecer su educación, ofrecemos acompañamiento académico integral para niños y jóvenes. Metodología personalizada, confianza y hábitos de estudio.</p>
+          <div class="btn-group">
+            <a href="#contacto" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Inscríbete</a>
+            <a href="https://wa.me/584244517644" target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <a href="#recursos" class="btn btn-outline"><i class="fas fa-download"></i> Recursos gratis</a>
+          </div>
         </div>
-    </header>
-
-    <!-- Sección Hero -->
-    <section id="inicio" class="hero">
-        <div class="container hero-container">
-            <div class="hero-content">
-                <h1 class="hero-title">Refuerzo Educativo para Formar el <span>Futuro del País</span></h1>
-                <p class="hero-text">En un país que necesita fortalecer su educación, ofrecemos acompañamiento académico integral para niños y jóvenes. Nuestra metodología personalizada desarrolla habilidades, confianza y hábitos de estudio que transforman vidas y construyen una mejor Venezuela, integrando postulados de Piaget, Ausubel, Montessori y Vygotsky.</p>
-                <a href="#contacto" class="btn btn-primary">Inscríbete Hoy</a>
-                <a href="#servicios" class="btn btn-accent" style="margin-left: 10px; background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); box-shadow: none;">Conocer Más</a>
-            </div>
-            <div class="hero-image">
-                <div class="hero-blob"></div>
-                <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen3.jpg?raw=true" alt="Estudiantes Genio Visión aprendiendo">
-            </div>
+        <div>
+          <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen3.jpg?raw=true" alt="Niños en mesa de estudio con metodología activa">
         </div>
+      </div>
     </section>
 
     <!-- Servicios -->
-    <section id="servicios" class="section-padding">
-        <div class="container">
-            <div class="text-center">
-                <h2 class="section-title">Nuestros Servicios</h2>
-                <p class="section-subtitle">Acompañamiento educativo integral adaptado a las etapas del desarrollo cognitivo, promoviendo el aprendizaje basado en proyectos (ABP) y la neuroeducación.</p>
-            </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
-                    <h3>Niveles Educativos</h3>
-                    <p>Cubrimos educación inicial, básica (primaria), diversificada (liceo) e introductorio universitario. Refuerzos en inglés, matemáticas, escritura y oratoria.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-lightbulb"></i></div>
-                    <h3>Metodología Innovadora</h3>
-                    <p>Acompañamiento paso a paso, integración de gamificación, actividades prácticas con tablets y estrategias manuales con materiales de reciclaje.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-clock"></i></div>
-                    <h3>Horarios Flexibles</h3>
-                    <p>Disponibilidad de 8:00 am a 6:00 pm, en sesiones de dos horas. Ofrecemos modalidades presencial, virtual, individual o en grupos pequeños.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-chart-line"></i></div>
-                    <h3>Beneficios Integrales</h3>
-                    <p>Mejora del rendimiento, desarrollo de confianza y consolidación de la Zona de Desarrollo Próximo trabajando en equipo con los representantes.</p>
-                </div>
-            </div>
+    <section id="servicios" aria-labelledby="servicios-title">
+      <div class="container">
+        <h2 class="section-title" id="servicios-title">Nuestros Servicios</h2>
+        <div class="grid-3">
+          <div class="card"><i class="fas fa-graduation-cap"></i><h3>Niveles Educativos</h3><p>Inicial, primaria, diversificado, refuerzos en inglés, matemáticas, escritura, oratoria y nivel universitario.</p></div>
+          <div class="card"><i class="fas fa-lightbulb"></i><h3>Metodología Innovadora</h3><p>Acompañamiento paso a paso, tablets, elementos manuales con reciclaje, aprendizaje basado en proyectos (ABP) y gamificación.</p></div>
+          <div class="card"><i class="fas fa-clock"></i><h3>Horarios Flexibles</h3><p>Lunes a viernes 8am-6pm. Sesiones de 2h. Presencial, virtual, grupos pequeños o individual.</p></div>
+          <div class="card"><i class="fas fa-heart"></i><h3>Beneficios Integrales</h3><p>Mejor rendimiento, confianza, hábitos de estudio consistentes. Trabajo en equipo con representantes.</p></div>
         </div>
+      </div>
     </section>
 
-    <!-- Paquetes y Precios -->
-    <section id="paquetes" class="section-padding pricing">
-        <div class="container">
-            <div class="text-center">
-                <h2 class="section-title">Inversión Educativa</h2>
-                <p class="section-subtitle">Planes diseñados con bases psicopedagógicas para garantizar un desarrollo progresivo y adaptado al ritmo de cada estudiante.</p>
-            </div>
-            
-            <div class="pricing-grid">
-                <!-- Paquete Piaget -->
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3 class="pricing-title">Paquete Piaget</h3>
-                        <p class="pricing-subtitle">Desarrollo Cognitivo Progresivo</p>
-                        <div class="pricing-price">8$ <span>/ semanal</span></div>
-                    </div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check-circle"></i> 4 días a la semana</li>
-                        <li><i class="fas fa-check-circle"></i> 2 horas por día</li>
-                        <li><i class="fas fa-check-circle"></i> Horario a escoger: 8am-12pm o 2pm-6pm</li>
-                        <li><i class="fas fa-check-circle"></i> Material de apoyo básico</li>
-                    </ul>
-                    <a href="https://wa.me/584244517644?text=Hola,%20deseo%20informaci%C3%B3n%20sobre%20el%20Paquete%20Piaget" class="btn btn-primary" style="width: 100%;">Solicitar Cupo</a>
-                </div>
-
-                <!-- Paquete Ausubel -->
-                <div class="pricing-card" style="border: 2px solid var(--secondary-color); transform: scale(1.05); z-index: 1;">
-                    <div style="position: absolute; top: 15px; right: -35px; background: var(--secondary-color); color: white; padding: 5px 40px; transform: rotate(45deg); font-size: 0.8rem; font-weight: bold;">DESTACADO</div>
-                    <div class="pricing-header">
-                        <h3 class="pricing-title">Paquete Ausubel</h3>
-                        <p class="pricing-subtitle">Aprendizaje Significativo</p>
-                        <div class="pricing-price">10$ <span>/ semanal</span></div>
-                    </div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check-circle"></i> 5 días a la semana (Lunes a Viernes)</li>
-                        <li><i class="fas fa-check-circle"></i> 2 horas por día</li>
-                        <li><i class="fas fa-check-circle"></i> Horario a escoger: 8am-12pm o 2pm-6pm</li>
-                        <li><i class="fas fa-check-circle"></i> Seguimiento personalizado completo</li>
-                    </ul>
-                    <a href="https://wa.me/584244517644?text=Hola,%20deseo%20informaci%C3%B3n%20sobre%20el%20Paquete%20Ausubel" class="btn btn-accent" style="width: 100%;">Solicitar Cupo</a>
-                </div>
-            </div>
+    <!-- Paquetes Piaget & Ausubel -->
+    <section id="paquetes" style="background:#EAF2F9;" aria-labelledby="paquetes-title">
+      <div class="container">
+        <h2 class="section-title" id="paquetes-title">Paquetes Educativos</h2>
+        <div class="paquetes-grid">
+          <div class="paquete"><h4>🧠 Piaget</h4><p>Desarrollo cognitivo progresivo</p><div class="precio">8$ <span style="font-size:1rem;font-weight:400;">/semanal</span></div><ul style="margin:0.8rem 0 0 1.2rem;"><li>4 días a la semana</li><li>2h por día</li><li>Horario a escoger (8-12 / 2-6)</li></ul></div>
+          <div class="paquete" style="border-top-color:#0A3A5E;"><h4>📚 Ausubel</h4><p>Aprendizaje significativo</p><div class="precio">10$ <span style="font-size:1rem;font-weight:400;">/semanal</span></div><ul style="margin:0.8rem 0 0 1.2rem;"><li>5 días a la semana</li><li>2h por día</li><li>Horario a escoger (8-12 / 2-6)</li></ul></div>
         </div>
+      </div>
     </section>
 
-    <!-- Recursos Educativos -->
-    <section id="recursos" class="section-padding" style="background: linear-gradient(to right, #0d47a1, #1565c0); color: white;">
-        <div class="container">
-            <div class="text-center">
-                <h2 class="section-title" style="color: white;">Recursos Educativos Gratuitos</h2>
-                <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Materiales descargables estructurados para complementar el aprendizaje en casa y apoyar la gestión docente.</p>
-            </div>
-            
-            <div class="resources-container">
-                <!-- Estudiantes -->
-                <div class="resource-box">
-                    <h3 style="color: var(--primary-color);"><i class="fas fa-child"></i> Para Estudiantes</h3>
-                    <div class="resource-list">
-                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/cuadernillo-de-trazos-para-ni%C3%B1os.pdf?raw=true" target="_blank" class="resource-item">
-                            <i class="fas fa-file-pdf resource-icon"></i>
-                            <span class="resource-name">Cuadernillo de trazos para niños</span>
-                            <i class="fas fa-download resource-download"></i>
-                        </a>
-                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/lecturas%20infantiles%20con%20pictogramas.pdf?raw=true" target="_blank" class="resource-item">
-                            <i class="fas fa-file-pdf resource-icon"></i>
-                            <span class="resource-name">Lecturas infantiles con pictogramas</span>
-                            <i class="fas fa-download resource-download"></i>
-                        </a>
-                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/Ejercicios%20de%20resta.pdf?raw=true" target="_blank" class="resource-item">
-                            <i class="fas fa-file-pdf resource-icon"></i>
-                            <span class="resource-name">Ejercicios de resta básica</span>
-                            <i class="fas fa-download resource-download"></i>
-                        </a>
-                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/ejercicios-de-restas-con-decimales.pdf?raw=true" target="_blank" class="resource-item">
-                            <i class="fas fa-file-pdf resource-icon"></i>
-                            <span class="resource-name">Ejercicios de restas con decimales</span>
-                            <i class="fas fa-download resource-download"></i>
-                        </a>
-                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/Ejercicios%20de%20matematica%20calculando%20ahorros.pdf?raw=true" target="_blank" class="resource-item">
-                            <i class="fas fa-file-pdf resource-icon"></i>
-                            <span class="resource-name">Matemática: Calculando ahorros</span>
-                            <i class="fas fa-download resource-download"></i>
-                        </a>
-                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/ejercicios-de-conversion-de-unidades-de-masa.pdf?raw=true" target="_blank" class="resource-item">
-                            <i class="fas fa-file-pdf resource-icon"></i>
-                            <span class="resource-name">Conversión de unidades de masa</span>
-                            <i class="fas fa-download resource-download"></i>
-                        </a>
-                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/actividades_de_os_fenomenos_naturales.pdf?raw=true" target="_blank" class="resource-item">
-                            <i class="fas fa-file-pdf resource-icon"></i>
-                            <span class="resource-name">Actividades de Fenómenos Naturales</span>
-                            <i class="fas fa-download resource-download"></i>
-                        </a>
-                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/Dibujos%20para%20unir%20y%20conectar%20puntos.pdf?raw=true" target="_blank" class="resource-item">
-                            <i class="fas fa-file-pdf resource-icon"></i>
-                            <span class="resource-name">Dibujos para conectar puntos</span>
-                            <i class="fas fa-download resource-download"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Docentes y Extras -->
-                <div class="resource-box">
-                    <h3 style="color: var(--primary-color);"><i class="fas fa-chalkboard-teacher"></i> Para Docentes / Planificación</h3>
-                    <div class="resource-list">
-                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/bitacora%20de%20incidencias.pdf?raw=true" target="_blank" class="resource-item">
-                            <i class="fas fa-file-pdf resource-icon" style="color: #00acc1;"></i>
-                            <span class="resource-name">Bitácora de incidencias (Formato)</span>
-                            <i class="fas fa-download resource-download"></i>
-                        </a>
-                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/actividades-de-los-dias-de-la-semana.pdf?raw=true" target="_blank" class="resource-item">
-                            <i class="fas fa-file-pdf resource-icon"></i>
-                            <span class="resource-name">Actividades de los días de la semana</span>
-                            <i class="fas fa-download resource-download"></i>
-                        </a>
-                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/actividades-de-los-dias-de-la-semana1.pdf?raw=true" target="_blank" class="resource-item">
-                            <i class="fas fa-file-pdf resource-icon"></i>
-                            <span class="resource-name">Actividades días de la semana (Vol. 2)</span>
-                            <i class="fas fa-download resource-download"></i>
-                        </a>
-                        <a href="https://github.com/jhonmalorne/GenioVision/blob/main/actividades%20naviden%CC%83as%20de%20unir%20puntos.pdf?raw=true" target="_blank" class="resource-item">
-                            <i class="fas fa-file-pdf resource-icon"></i>
-                            <span class="resource-name">Especial: Actividades Navideñas</span>
-                            <i class="fas fa-download resource-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <!-- Recursos educativos gratuitos -->
+    <section id="recursos" aria-labelledby="recursos-title">
+      <div class="container">
+        <h2 class="section-title" id="recursos-title">Recursos Educativos Gratuitos</h2>
+        <div class="recursos-lista">
+          <a href="https://github.com/jhonmalorne/GenioVision/blob/main/Dibujos%20para%20unir%20y%20conectar%20puntos.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Unir puntos</a>
+          <a href="https://github.com/jhonmalorne/GenioVision/blob/main/Ejercicios%20de%20matematica%20calculando%20ahorros.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Matemática ahorros</a>
+          <a href="https://github.com/jhonmalorne/GenioVision/blob/main/Ejercicios%20de%20resta.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Ejercicios resta</a>
+          <a href="https://github.com/jhonmalorne/GenioVision/blob/main/actividades%20naviden%CC%83as%20de%20unir%20puntos.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Navidad unir puntos</a>
+          <a href="https://github.com/jhonmalorne/GenioVision/blob/main/actividades-de-los-dias-de-la-semana.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Días de la semana</a>
+          <a href="https://github.com/jhonmalorne/GenioVision/blob/main/actividades_de_os_fenomenos_naturales.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Fenómenos naturales</a>
+          <a href="https://github.com/jhonmalorne/GenioVision/blob/main/cuadernillo-de-trazos-para-ni%C3%B1os.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Trazos</a>
+          <a href="https://github.com/jhonmalorne/GenioVision/blob/main/ejercicios-de-conversion-de-unidades-de-masa.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Conversión masa</a>
+          <a href="https://github.com/jhonmalorne/GenioVision/blob/main/ejercicios-de-restas-con-decimales.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Restas decimales</a>
+          <a href="https://github.com/jhonmalorne/GenioVision/blob/main/lecturas%20infantiles%20con%20pictogramas.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Lecturas pictogramas</a>
+          <a href="https://github.com/jhonmalorne/GenioVision/blob/main/bitacora%20de%20incidencias.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Bitácora docentes</a>
         </div>
-    </section>
-
-    <!-- Mapa Interactivo / Geografía Educativa UNESCO -->
-    <section id="mapa" class="section-padding map-section">
-        <div class="container">
-            <div class="text-center">
-                <h2 class="section-title">Explorador Geográfico Institucional</h2>
-                <p class="section-subtitle">Herramienta interactiva de Ciencias Sociales basada en los lineamientos UNESCO. Explora el relieve, ríos, y división político-territorial. Fomenta el aprendizaje por descubrimiento (ABP).</p>
-            </div>
-            
-            <div class="map-controls">
-                <select id="mapFilter" class="map-select">
-                    <option value="ADM1">Ver por Estados (Nacional)</option>
-                    <option value="ADM2">Ver por Municipios (Regional)</option>
-                </select>
-                <div class="map-select" style="background: var(--bg-light); border-color: transparent; cursor: default;">
-                    <i class="fas fa-info-circle"></i> Usa el control en el mapa para alternar entre relieve topográfico y calles.
-                </div>
-            </div>
-
-            <div id="venezuelaMap" class="map-container"></div>
+        <div style="margin-top:1.8rem;">
+          <h4 style="font-weight:600; margin-bottom:0.6rem;"><i class="fab fa-youtube" style="color:#F00;"></i> Canales educativos recomendados</h4>
+          <div style="display:flex; flex-wrap:wrap; gap:0.5rem 1rem;">
+            <a href="https://www.youtube.com/@AventurasconlosKratt" target="_blank">@AventurasconlosKratt</a>
+            <a href="https://www.youtube.com/@SmileandLearnEspa%C3%B1ol" target="_blank">@SmileandLearn</a>
+            <a href="https://www.youtube.com/@numberblocks_es" target="_blank">@numberblocks</a>
+            <a href="https://www.youtube.com/@cntvinfantil" target="_blank">@cntvinfantil</a>
+            <a href="https://www.youtube.com/@danielcarreon" target="_blank">@danielcarreon</a>
+            <a href="https://www.youtube.com/@JunyTonyES" target="_blank">@JunyTonyES</a>
+            <a href="https://www.youtube.com/@Blippi" target="_blank">@Blippi</a>
+            <a href="https://www.youtube.com/channel/UCYQo8CdhXD22qfwUBUw591Q" target="_blank">Plim Plim</a>
+            <a href="https://www.youtube.com/@plazasesamo" target="_blank">Plaza Sésamo</a>
+            <a href="https://www.youtube.com/channel/UCmngKdHI41_dHy2FpMS5j-Q" target="_blank">Aprende Peque</a>
+            <a href="https://www.youtube.com/@ElMundoDeLuna" target="_blank">El Mundo de Luna</a>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Galería -->
-    <section id="galeria" class="section-padding">
-        <div class="container">
-            <div class="text-center">
-                <h2 class="section-title">Nuestros Espacios y Experiencias</h2>
-                <p class="section-subtitle">Un entorno diseñado para estimular la creatividad, el enfoque y la interacción social.</p>
-            </div>
-            
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/fachadalocal.jpg?raw=true" alt="Fachada del local Genio Visión" loading="lazy">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen4.jpg?raw=true" alt="Niños jugando y aprendiendo" loading="lazy">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen7.jpg?raw=true" alt="Niña escribiendo y estudiando" loading="lazy">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen5.jpg?raw=true" alt="Manualidad de flores con tapas de reciclaje" loading="lazy">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen6.jpg?raw=true" alt="Dinámicas de juego educativo" loading="lazy">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/mapa_de_Venezuela.png?raw=true" alt="Recurso cartográfico físico" loading="lazy" style="object-fit: contain; background: #fff;">
-                </div>
-            </div>
+    <section id="galeria" style="background:#F5F9FE;" aria-labelledby="galeria-title">
+      <div class="container">
+        <h2 class="section-title" id="galeria-title">Galería y Evidencias</h2>
+        <div class="galeria">
+          <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen4.jpg?raw=true" alt="niños jugando aprendizaje">
+          <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen5.jpg?raw=true" alt="flores con tapas reciclaje">
+          <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen6.jpg?raw=true" alt="niños jugando">
+          <img src="https://github.com/jhonmalorne/GenioVision/blob/main/imagen7.jpg?raw=true" alt="niña escribiendo">
+          <img src="https://github.com/jhonmalorne/GenioVision/blob/main/fachadalocal.jpg" alt="fachada local Genio Visión">
         </div>
+      </div>
     </section>
 
-    <!-- Footer / Contacto -->
-    <footer id="contacto">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-about">
-                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/logo.png?raw=true" alt="Genio Visión Logo Negro">
-                    <p>Formamos líderes a través del refuerzo educativo. Utilizamos la innovación, el reciclaje, y el acompañamiento humano para sacar el genio que cada estudiante lleva dentro.</p>
-                </div>
-                
-                <div class="footer-contact">
-                    <h3 class="footer-title">Contacto</h3>
-                    <ul class="contact-info">
-                        <li>
-                            <i class="fas fa-map-marker-alt"></i>
-                            <div>
-                                <strong>Ubicación:</strong><br>
-                                Centro de Tareas Dirigidas, Los Guayos, Edo. Carabobo.
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fab fa-whatsapp"></i>
-                            <div>
-                                <strong>Teléfono / WhatsApp:</strong><br>
-                                <a href="https://wa.me/584244517644">+58 424-4517644</a>
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <div>
-                                <strong>Correo Electrónico:</strong><br>
-                                <a href="mailto:mariannyt24@gmail.com">mariannyt24@gmail.com</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="footer-hours">
-                    <h3 class="footer-title">Horario de Atención</h3>
-                    <ul class="contact-info">
-                        <li>
-                            <i class="fas fa-clock"></i>
-                            <div>
-                                Lunes a Viernes<br>
-                                8:00 am - 6:00 pm
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fas fa-calendar-alt"></i>
-                            <div>
-                                Sesiones de 2 horas diarias según el paquete seleccionado (Piaget / Ausubel).
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2026 Genio Visión. Todos los derechos reservados. Desarrollado con estándares de accesibilidad WCAG 2.2 y HTML5.</p>
-            </div>
+    <!-- Mapa educativo interactivo (UNESCO / geografía) -->
+    <section id="mapa-educativo" style="background:#fff;" aria-labelledby="mapa-title">
+      <div class="container mapa-section">
+        <h2 class="section-title" id="mapa-title"><i class="fas fa-map-marked-alt"></i> Mapa Educativo de Venezuela</h2>
+        <p style="margin-bottom:0.5rem;">Explora estados, municipios, ríos, montañas y placas tectónicas. Datos con enfoque UNESCO.</p>
+        <div class="filtros-map" id="filtrosMapa">
+          <button class="active" data-capa="estados">Estados</button>
+          <button data-capa="municipios">Municipios</button>
+          <button data-capa="rios">Ríos</button>
+          <button data-capa="montanas">Montañas</button>
+          <button data-capa="tectonicas">Placas tectónicas</button>
         </div>
-    </footer>
+        <div id="mapaVenezuela"></div>
+        <div class="info-educativa">
+          <i class="fas fa-globe-americas"></i>
+          <span><strong>Dato UNESCO:</strong> Venezuela posee una diversidad geográfica extraordinaria. Los Andes, la Gran Sabana, el Lago de Maracaibo y la Amazonia son regiones clave para el estudio de ecosistemas y culturas.</span>
+        </div>
+      </div>
+    </section>
 
-    <!-- Botón flotante WhatsApp -->
-    <a href="https://wa.me/584244517644" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <!-- Contacto -->
+    <section id="contacto" style="background:#EAF2F9;" aria-labelledby="contacto-title">
+      <div class="container">
+        <h2 class="section-title" id="contacto-title">Contáctanos</h2>
+        <div class="contacto-grid">
+          <div>
+            <div class="contacto-item"><i class="fas fa-phone-alt"></i><span><strong>Teléfono / WhatsApp</strong><br>+58 424-4517644</span></div>
+            <div class="contacto-item"><i class="fas fa-envelope"></i><span><strong>Correo</strong><br>mariannyt24@gmail.com</span></div>
+            <div class="contacto-item"><i class="fas fa-map-pin"></i><span><strong>Ubicación</strong><br>Centro de tareas dirigidas, Venezuela</span></div>
+            <div class="contacto-item"><i class="fas fa-clock"></i><span><strong>Horario</strong><br>Lun-Vie 8:00 am - 6:00 pm</span></div>
+            <a href="https://wa.me/584244517644" target="_blank" class="btn btn-whatsapp" style="margin-top:1rem;"><i class="fab fa-whatsapp"></i> Escríbenos por WhatsApp</a>
+          </div>
+          <div style="background:#fff; border-radius:28px; padding:1.5rem; box-shadow:0 8px 20px rgba(0,0,0,0.02);">
+            <p><i class="fas fa-check-circle" style="color:#F5A623;"></i> Inscripciones abiertas. Agenda una sesión de prueba.</p>
+            <p style="margin-top:0.8rem;"><i class="fas fa-users"></i> Modalidades presencial, virtual, grupal o individual.</p>
+            <img src="https://github.com/jhonmalorne/GenioVision/blob/main/logo.png?raw=true" alt="logo genio visión" style="max-width:120px; margin-top:1rem; opacity:0.6;">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Configuración inicial del mapa de Leaflet
-            // Centrado en Venezuela (aprox)
-            const map = L.map('venezuelaMap').setView([7.5229, -66.1916], 6);
+  <footer>
+    <div class="container footer-grid">
+      <span>© 2026 GENIO VISIÓN · Centro de Tareas Dirigidas</span>
+      <div class="footer-links">
+        <a href="#servicios">Servicios</a>
+        <a href="#recursos">Recursos</a>
+        <a href="#contacto">Contacto</a>
+        <a href="https://github.com/jhonmalorne/GenioVision" target="_blank"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+  </footer>
 
-            // Capa 1: OpenStreetMap (Estándar/Calles)
-            const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            });
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    (function(){
+      // Inicializar mapa centrado en Venezuela
+      const map = L.map('mapaVenezuela').setView([8.0, -66.0], 6);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap, CartoDB'
+      }).addTo(map);
 
-            // Capa 2: OpenTopoMap (Relieve, Montañas, Ríos - Ideal para UNESCO/Geografía)
-            const topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-                attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap'
-            });
+      // GeoJSON capas (cargamos desde GitHub)
+      let capaEstados = null, capaMunicipios = null;
+      let capaActiva = 'estados';
 
-            // Añadir topografía por defecto por su valor educativo
-            topoLayer.addTo(map);
+      // Función para cargar geojson
+      function cargarGeoJSON(url, nombre) {
+        return fetch(url)
+          .then(res => {
+            if (!res.ok) throw new Error('Error cargando ' + nombre);
+            return res.json();
+          })
+          .catch(err => { console.warn('No se pudo cargar '+nombre, err); return null; });
+      }
 
-            // Control de capas (Interfaz excelente)
-            const baseMaps = {
-                "Mapa Físico (Relieve y Ríos)": topoLayer,
-                "Mapa Político (Calles y Ciudades)": streetLayer
-            };
-            L.control.layers(baseMaps).addTo(map);
+      function limpiarCapas() {
+        if (capaEstados) { map.removeLayer(capaEstados); capaEstados = null; }
+        if (capaMunicipios) { map.removeLayer(capaMunicipios); capaMunicipios = null; }
+      }
 
-            // Variables para almacenar las capas GeoJSON
-            let geojsonLayer = null;
+      function agregarCapa(geojson, color='#0A3A5E', peso=2) {
+        if (!geojson) return null;
+        return L.geoJSON(geojson, {
+          style: { color: color, weight: peso, fillOpacity: 0.2 },
+          onEachFeature: function(feature, layer) {
+            const nombre = feature.properties?.name || feature.properties?.NAME || feature.properties?.nombre || 'Sin nombre';
+            layer.bindPopup(`<strong>${nombre}</strong><br>${capaActiva === 'estados' ? 'Estado' : 'Municipio'}`);
+          }
+        }).addTo(map);
+      }
 
-            // URLs de los GeoJSON (usando raw.githubusercontent para evitar problemas de CORS)
-            const urls = {
-                ADM1: 'https://raw.githubusercontent.com/jhonmalorne/GenioVision/main/geoBoundaries-VEN-ADM1_simplified.geojson',
-                ADM2: 'https://raw.githubusercontent.com/jhonmalorne/GenioVision/main/geoBoundaries-VEN-ADM2_simplified.geojson'
-            };
+      // Cargar datos iniciales (estados)
+      function cargarDatosIniciales() {
+        limpiarCapas();
+        cargarGeoJSON('https://raw.githubusercontent.com/jhonmalorne/GenioVision/main/geoBoundaries-VEN-ADM1_simplified.geojson', 'Estados')
+          .then(data => {
+            if (data) { capaEstados = agregarCapa(data, '#1C5A7A', 2.5); }
+          });
+        // también precargamos municipios pero ocultos
+        cargarGeoJSON('https://raw.githubusercontent.com/jhonmalorne/GenioVision/main/geoBoundaries-VEN-ADM2_simplified.geojson', 'Municipios')
+          .then(data => {
+            if (data) {
+              // guardamos para después
+              window._municipiosData = data;
+            }
+          });
+      }
 
-            // Estilos para los polígonos
-            const styleFeature = (feature) => {
-                return {
-                    fillColor: '#00acc1',
-                    weight: 2,
-                    opacity: 1,
-                    color: 'white',
-                    dashArray: '3',
-                    fillOpacity: 0.4
-                };
-            };
-
-            // Eventos al interactuar con las regiones
-            const onEachFeature = (feature, layer) => {
-                layer.on({
-                    mouseover: (e) => {
-                        const layer = e.target;
-                        layer.setStyle({
-                            fillColor: '#ff9800',
-                            fillOpacity: 0.7
-                        });
-                        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-                            layer.bringToFront();
-                        }
-                    },
-                    mouseout: (e) => {
-                        if(geojsonLayer) {
-                            geojsonLayer.resetStyle(e.target);
-                        }
-                    }
-                });
-
-                // Extraer el nombre de la región basado en las propiedades de geoBoundaries
-                const regionName = feature.properties.shapeName || feature.properties.name || "Región sin nombre";
-                
-                // Construir un Popup Educativo basado en ABP y exploración
-                const popupContent = `
-                    <div class="info-panel">
-                        <h4><i class="fas fa-map-pin"></i> ${regionName}</h4>
-                        <p><strong>Reto de Aprendizaje (UNESCO):</strong></p>
-                        <ul>
-                            <li>Identifica el principal cuerpo de agua o río de esta entidad.</li>
-                            <li>Investiga su formación topográfica (montañas, llanuras o costa).</li>
-                            <li>¿Qué actividad económica predomina aquí?</li>
-                        </ul>
-                    </div>
-                `;
-                layer.bindPopup(popupContent);
-            };
-
-            // Función para cargar los datos
-            const loadGeoData = async (type) => {
-                try {
-                    // Remover capa anterior si existe
-                    if (geojsonLayer) {
-                        map.removeLayer(geojsonLayer);
-                    }
-
-                    const response = await fetch(urls[type]);
-                    const data = await response.json();
-
-                    geojsonLayer = L.geoJSON(data, {
-                        style: styleFeature,
-                        onEachFeature: onEachFeature
-                    }).addTo(map);
-
-                } catch (error) {
-                    console.error("Error al cargar los datos geográficos: ", error);
-                    // Fallback visual si falla el fetch (ej. sin conexión a internet)
-                    L.popup()
-                        .setLatLng([7.5229, -66.1916])
-                        .setContent("Fallo al cargar el mapa GeoJSON. Por favor, revisa la conexión.")
-                        .openOn(map);
-                }
-            };
-
-            // Marcador de la Sede Principal
-            const customIcon = L.icon({
-                iconUrl: 'https://github.com/jhonmalorne/GenioVision/blob/main/icono%20maps.png?raw=true',
-                iconSize: [40, 40],
-                iconAnchor: [20, 40],
-                popupAnchor: [0, -40]
-            });
-
-            // Marcador fijado en el municipio base operativo
-            const sedeMarker = L.marker([10.1913, -67.9351], {icon: customIcon}).addTo(map);
-            sedeMarker.bindPopup(`
-                <div style="text-align:center;">
-                    <img src="https://github.com/jhonmalorne/GenioVision/blob/main/logo%20fondo%20celeste.png?raw=true" style="width:80px; margin-bottom:10px;">
-                    <h4 style="color:#0d47a1; margin:0;">Genio Visión Sede Principal</h4>
-                    <p style="margin:5px 0 0 0; font-size:12px;">Centro de Tareas Dirigidas</p>
-                </div>
-            `);
-
-            // Iniciar con la capa de Estados (ADM1)
-            loadGeoData('ADM1');
-
-            // Evento de filtro
-            document.getElementById('mapFilter').addEventListener('change', (e) => {
-                loadGeoData(e.target.value);
-            });
+      // switch de capas (simulación educativa: ríos, montañas, tectónicas se representan con marcadores)
+      function aplicarFiltro(capa) {
+        capaActiva = capa;
+        limpiarCapas();
+        // Quitar marcadores extra si los hay
+        map.eachLayer(layer => {
+          if (layer instanceof L.Marker && layer._icon && layer._icon.classList.contains('extra-marker')) {
+            map.removeLayer(layer);
+          }
         });
-    </script>
+
+        if (capa === 'estados') {
+          cargarGeoJSON('https://raw.githubusercontent.com/jhonmalorne/GenioVision/main/geoBoundaries-VEN-ADM1_simplified.geojson', 'Estados')
+            .then(data => { if (data) capaEstados = agregarCapa(data, '#1C5A7A', 2.5); });
+        } else if (capa === 'municipios') {
+          if (window._municipiosData) {
+            capaMunicipios = agregarCapa(window._municipiosData, '#2E7D5E', 1.5);
+          } else {
+            cargarGeoJSON('https://raw.githubusercontent.com/jhonmalorne/GenioVision/main/geoBoundaries-VEN-ADM2_simplified.geojson', 'Municipios')
+              .then(data => { if (data) { window._municipiosData = data; capaMunicipios = agregarCapa(data, '#2E7D5E', 1.5); } });
+          }
+        } else {
+          // Ríos, montañas, placas: mostramos puntos de interés educativos
+          const puntos = {
+            rios: [
+              { lat: 8.5, lng: -62.0, nom: 'Río Orinoco' },
+              { lat: 7.8, lng: -64.5, nom: 'Río Caroní' },
+              { lat: 10.5, lng: -71.5, nom: 'Río Catatumbo' }
+            ],
+            montanas: [
+              { lat: 8.7, lng: -70.8, nom: 'Pico Bolívar (Andes)' },
+              { lat: 8.2, lng: -71.8, nom: 'Pico Humboldt' },
+              { lat: 9.5, lng: -66.0, nom: 'Cerro El Ávila' }
+            ],
+            tectonicas: [
+              { lat: 10.0, lng: -68.0, nom: 'Placa del Caribe' },
+              { lat: 7.0, lng: -62.0, nom: 'Placa Sudamericana' }
+            ]
+          };
+          const lista = puntos[capa] || [];
+          lista.forEach(p => {
+            const marker = L.marker([p.lat, p.lng], { icon: L.divIcon({ className: 'extra-marker', html: '<i class="fas fa-circle" style="color:#F5A623;font-size:1.2rem;"></i>', iconSize: [20,20] }) })
+              .addTo(map)
+              .bindPopup(`<strong>${p.nom}</strong><br>Dato educativo UNESCO`);
+          });
+          // Añadir nota
+          if (lista.length === 0) {
+            L.marker([8.0, -66.0], { icon: L.divIcon({ className: 'extra-marker', html: '📍', iconSize: [30,30] }) })
+              .addTo(map)
+              .bindPopup('Venezuela: diversidad geográfica');
+          }
+        }
+        // actualizar botones activos
+        document.querySelectorAll('#filtrosMapa button').forEach(b => b.classList.remove('active'));
+        document.querySelector(`#filtrosMapa button[data-capa="${capa}"]`)?.classList.add('active');
+      }
+
+      // Eventos filtros
+      document.querySelectorAll('#filtrosMapa button').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const capa = this.dataset.capa;
+          aplicarFiltro(capa);
+        });
+      });
+
+      // Inicializar
+      cargarDatosIniciales();
+
+      // Ajuste de mapa al redimensionar
+      setTimeout(() => map.invalidateSize(), 400);
+
+      // Añadir información educativa extra en el mapa con un marcador de la UNESCO
+      L.marker([6.5, -66.5], { icon: L.divIcon({ className: 'extra-marker', html: '🏛️', iconSize: [30,30] }) })
+        .addTo(map)
+        .bindPopup('UNESCO: Patrimonio natural y cultural de Venezuela');
+    })();
+  </script>
 </body>
 </html>
